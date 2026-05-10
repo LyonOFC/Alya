@@ -26,11 +26,14 @@ let handler = async (m, { conn }) => {
       let userData = global.db.data.users[userId] || {}
       let messageCount = userData.messageCount || 0
       
-      userStats.push({
-        id: userId,
-        name: member.name || userId.split('@')[0],
-        count: messageCount
-      })
+      // Solo agregar si es un número de teléfono válido (contiene @s.whatsapp.net)
+      if (userId.includes('@s.whatsapp.net')) {
+        userStats.push({
+          id: userId,
+          name: member.name || userId.split('@')[0],
+          count: messageCount
+        })
+      }
     }
     
     userStats.sort((a, b) => a.count - b.count)
@@ -56,7 +59,7 @@ let handler = async (m, { conn }) => {
 
 > ₊· ⫏⫏ ㅤ *Top 5 inactivos:*
 
-${mensajes}
+${mensajes || '> No hay miembros inactivos con número válido'}
 
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏ ꒱
     `.trim()
