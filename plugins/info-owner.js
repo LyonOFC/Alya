@@ -2,14 +2,6 @@ let handler = async (m, { conn }) => {
   let nomor = '59177474230'
   let nombre = 'Lyonn'
   
-  let vcard = `BEGIN:VCARD
-VERSION:3.0
-FN:${nombre}
-ORG:Alya Sub
-TITLE:Creador
-TEL;waid=${nomor}:${nomor}
-END:VCARD`
-
   let fotoPerfil = 'https://files.catbox.moe/jg0te7.jpeg'
   try {
     let pp = await conn.profilePictureUrl(nomor + '@s.whatsapp.net', 'image')
@@ -22,6 +14,7 @@ END:VCARD`
 
 > ₊· ⫏⫏ ㅤ *🎭 ℓүσηη*
 > ₊· ⫏⫏ ㅤ *Rol:* Creador
+> ₊· ⫏⫏ ㅤ *Número:* ${nomor}
 
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
   `.trim()
@@ -29,7 +22,6 @@ END:VCARD`
   await conn.sendMessage(m.chat, {
     image: { url: fotoPerfil },
     caption: caption,
-    contact: vcard,
     contextInfo: {
       forwardingScore: 999,
       isForwarded: true,
