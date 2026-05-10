@@ -381,7 +381,7 @@ let user = global.db.data.users[m.sender]
 if (!['grupo-unbanchat.js'].includes(name) && chat && chat.isBanned && !isROwner) return
 if (name != 'grupo-unbanchat.js' && name != 'owner-exec.js' && name != 'owner-exec2.js' && name != 'grupo-delete.js' && chat?.isBanned && !isROwner) return
 if (m.text && user.banned && !isROwner) {
-m.reply(`《✦》Estas baneado/a, no puedes usar comandos en este bot!\n\n${user.bannedReason ? `✰ *Motivo:* ${user.bannedReason}` : '✰ *Motivo:* Sin Especificar'}\n\n> ✧ Si este Bot es cuenta oficial y tiene evidencia que respalde que este mensaje es un error, puedes exponer tu caso con un moderador.`)
+m.reply(`✦ Estas baneado/a, no puedes usar comandos en este bot!\n\n${user.bannedReason ? `Motivo: ${user.bannedReason}` : 'Motivo: Sin Especificar'}\n\n> Si este Bot es cuenta oficial y tiene evidencia que respalde que este mensaje es un error, puedes exponer tu caso con un moderador.`)
 return
 }
 
@@ -445,7 +445,7 @@ conn.reply(m.chat, `❮✦❯ Se agotaron tus ${moneda}`, m)
 continue
 }
 if (plugin.level > _user.level) {
-conn.reply(m.chat, `❮✦❯ Se requiere el nivel: *${plugin.level}*\n\n• Tu nivel actual es: *${_user.level}*\n\n• Usa este comando para subir de nivel:\n*${usedPrefix}levelup*`, m)
+conn.reply(m.chat, `❮✦❯ Se requiere el nivel: ${plugin.level}\n\n• Tu nivel actual es: ${_user.level}\n\n• Usa este comando para subir de nivel:\n${usedPrefix}levelup`, m)
 continue
 }
 let extra = {
@@ -568,11 +568,11 @@ global.dfail = (type, m, conn, usedPrefix, command) => {
     owner: '👑 Solo el Creador y Sub Bots pueden usar este comando.',
     mods: '🛡️ Solo los Moderadores pueden usar este comando.',
     premium: '💎 Solo usuarios Premium pueden usar este comando.',
-    group: '「✧」 Este comando es sólo para grupos.',
+    group: 'Este comando es solo para grupos.',
     private: '🔒 Solo en Chat Privado puedes usar este comando.',
-    admin: '⚔️ Solo los Admins del Grupo pueden usar este comando.',
-    botAdmin: 'El bot debe ser Admin para ejecutar esto.',
-    unreg: '> 🔰 Debes estar Registrado para usar este comando.\n\n Ejemplo : #reg Wilker.15',
+    admin: 'Solo los administradores del grupo pueden usar este comando.',
+    botAdmin: 'La bot necesita ser administradora para ejecutar esto.',
+    unreg: '🔰 Debes estar registrado para usar este comando.\n\nEjemplo: #reg Lyonn.14',
     restrict: '⛔ Esta función está deshabilitada.'
     }[type];
 
