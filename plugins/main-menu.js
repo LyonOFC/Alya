@@ -3,10 +3,11 @@ import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
 
 const tags = {
-  owner: 'σωηєя',
-  rpg: 'яρg',
+  main: 'ρяιη¢ιραℓ',
   group: 'ɢяυρσѕ',
-  serbot: 'ѕєявσт'
+  economy: 'є¢σησму',
+  serbot: 'ѕєявσт',
+  owner: 'σωηєя'
 }
 
 const defaultMenu = {
@@ -17,7 +18,6 @@ const defaultMenu = {
 > ₊· нσℓα *.* вιєηνєηι∂σ αℓ мєηυ ∂є *αℓуα ѕυв*
 > ₊· υѕυαяισ: %name
 > ₊· ηινєℓ: %level
-> ₊· єχρ: %exp / %maxexp
 > ₊· υѕυαяισѕ: %totalreg
 
 %readmore
@@ -37,6 +37,29 @@ const defaultMenu = {
 
 const handler = async (m, { conn, usedPrefix: _p }) => {
   try {
+    let user = global.db.data.users[m.sender]
+    
+    if (!user.registered) {
+      let fotoPerfil = 'https://files.catbox.moe/jg0te7.jpeg'
+      try {
+        let pp = await conn.profilePictureUrl(m.sender, 'image')
+        if (pp) fotoPerfil = pp
+      } catch (e) {}
+      
+      return await conn.sendMessage(m.chat, {
+        image: { url: fotoPerfil },
+        caption: `
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ яєgιѕтяσ 木 ηє¢єѕαяισ ㅤ ✿
+
+> ₊· ⫏⫏ ㅤ *Debes registrarte primero*
+> ₊· ⫏⫏ ㅤ Usa: ${_p}reg Lyonn.14
+
+ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
+        `.trim()
+      }, { quoted: m })
+    }
+    
     const { exp, level } = global.db.data.users[m.sender]
     const { min, xp } = xpRange(level, global.multiplier)
     const name = await conn.getName(m.sender)
@@ -97,18 +120,18 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       }
     }, { quoted: m })
 
-    await m.react('☄️')
+    await m.react('🕸️')
 
   } catch (e) {
     console.error('Error en el menú:', e)
-    await m.reply(`❌ 𝙴𝚛𝚛𝚘𝚛: ${e.message}`)
+    await m.reply(`❌ Error: ${e.message}`)
   }
 }
 
 handler.help = ['menu', 'menú', 'help', 'ayuda']
 handler.tags = ['main']
 handler.command = ['menu', 'menú', 'help', 'ayuda']
-handler.register = true
+handler.register = false
 
 export default handler
 
