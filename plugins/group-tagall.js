@@ -1,4 +1,4 @@
-let handler = async (m, { conn, text, isAdmin, isOwner, isROwner, isBotAdmin }) => {
+let handler = async (m, { conn, isAdmin, isOwner, text }) => {
   let isGroup = m.chat.endsWith('@g.us')
 
   if (!isGroup) return m.reply(`
@@ -8,50 +8,42 @@ let handler = async (m, { conn, text, isAdmin, isOwner, isROwner, isBotAdmin }) 
 > ₊· ⫏⫏ ㅤ Sσℓσ єη gяυρσѕ
 `.trim())
 
-  if (!isAdmin && !isOwner && !isROwner) return m.reply(`
-ㅤ    ꒰  ㅤ ❌ � *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+  if (!isAdmin && !isOwner) return m.reply(`
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ α∂мιη 木 яєqυєяι∂σ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ Nєcєѕιтαѕ ѕєя α∂мιη
 `.trim())
 
-  if (!isBotAdmin) return m.reply(`
-ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
-ㅤ    ⿻ ㅤ ✿ ㅤ вσт 木 ѕιη α∂мιη ㅤ 性
+  let grupo = await conn.groupMetadata(m.chat)
+  let participantes = grupo.participants
+  let mensaje = text || '📢 *Atencion*'
 
-> ₊· ⫏⫏ ㅤ Eℓ вσт ηє¢єѕιтα ѕєя α∂мιη
-`.trim())
+  let listaMenciones = []
+  let numeros = ''
 
-  let groupMetadata = await conn.groupMetadata(m.chat)
-  let participants = groupMetadata.participants
-  let memberCount = participants.length
-  let mensaje = text ? text : '📢'
-
-  let mentions = []
-  for (let i = 0; i < participants.length; i++) {
-    let user = participants[i].id
+  for (let i = 0; i < participantes.length; i++) {
+    let user = participantes[i].id
     if (user === conn.user.jid) continue
-    mentions.push(user)
+    listaMenciones.push(user)
+    numeros += `> ${i + 1}. @${user.split('@')[0]}\n`
   }
 
-  let tagAllText = `ㅤ    ꒰  ㅤ 📢 ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+  let caption = `
+ㅤ    ꒰  ㅤ 📢 ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ тαgαℓℓ 木 мєη¢ιση ㅤ 性
 
-> ₊· ⫏⫏ ㅤ ${mensaje}
+> ₊· ⫏⫏ ㅤ *Mensaje:* ${mensaje}
+> ₊· ⫏⫏ ㅤ *Miembros:* ${participantes.length}
 
-`
+${numeros}
 
-  for (let i = 0; i < mentions.length; i++) {
-    tagAllText += `✦ @${mentions[i].split('@')[0]}\n`
-  }
-
-  tagAllText += `
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
-`
+  `.trim()
 
   await conn.sendMessage(m.chat, {
-    text: tagAllText,
-    mentions: mentions,
+    text: caption,
+    mentions: listaMenciones,
     contextInfo: {
       forwardingScore: 999,
       isForwarded: true,
@@ -66,10 +58,9 @@ let handler = async (m, { conn, text, isAdmin, isOwner, isROwner, isBotAdmin }) 
 
 handler.help = ['tagall']
 handler.tags = ['group']
-handler.command = ['tagall', 'todos', 'everyone']
-handler.desc = 'ᴍᴇɴᴄɪᴏɴᴀ ᴀ ᴛᴏᴅᴏs ʟᴏs ᴍɪᴇᴍʙʀᴏs ᴅᴇʟ ɢʀᴜᴘᴏ'
+handler.command = ['tagall', 'todos', 'mencionar']
+handler.desc = 'ᴍᴇɴᴄɪᴏɴᴀ ᴀ ᴛᴏᴅᴏꜱ ʟᴏꜱ ᴍɪᴇᴍʙʀᴏꜱ ᴅᴇʟ ɢʀᴜᴘᴏ'
 handler.group = true
 handler.admin = true
-handler.botAdmin = true
 
 export default handler
