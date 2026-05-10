@@ -63,6 +63,7 @@ Alya Sub - La mejor botsita` }, { quoted: m })
 handler.help = ['config']
 handler.tags = ['group']
 handler.command = ['config', 'conf', 'setting']
+handler.group = true
 handler.desc = 'Activa o desactiva la bienvenida y despedida en el grupo'
 
 export default handler
