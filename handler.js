@@ -107,6 +107,8 @@ if (!isNumber(user.bank))
 user.bank = 0
 if (!isNumber(user.warn))
 user.warn = 0
+if (!isNumber(user.messageCount))
+user.messageCount = 0
 } else
 global.db.data.users[m.sender] = {
 exp: 0,
@@ -141,7 +143,8 @@ bank: 0,
 level: 0,
 role: 'Nuv',
 premium: false,
-premiumTime: 0,                 
+premiumTime: 0,
+messageCount: 0                 
 }
 let chat = global.db.data.chats[m.chat]
 if (typeof chat !== 'object')
@@ -259,6 +262,13 @@ await delay(time)
 
 m.exp += Math.ceil(Math.random() * 10)
 
+// CONTADOR DE MENSAJES
+let userMsg = global.db.data.users[m.sender]
+if (userMsg) {
+if (!isNumber(userMsg.messageCount)) userMsg.messageCount = 0
+userMsg.messageCount += 1
+}
+
 async function getLidFromJid(id, conn) {
 if (id.endsWith('@lid')) return id
 const res = await conn.onWhatsApp(id).catch(() => [])
@@ -339,7 +349,7 @@ continue
 }
 if (typeof plugin !== 'function')
 continue
-if ((usedPrefix = (match[0] || '')[0])) { // usedPrefix ahora se asigna, no se declara aquí
+if ((usedPrefix = (match[0] || '')[0])) {
 let noPrefix = m.text.replace(usedPrefix, '')
 let [command, ...args] = noPrefix.trim().split` `.filter(v => v)
 args = args || []
@@ -475,8 +485,6 @@ text = text.replace(new RegExp(key, 'g'), 'Administrador')
 m.reply(text)
 }
 } finally {
-// El bloque finally siempre se ejecuta, incluso si usedPrefix no ha sido definido
-// Asegúrate de que cualquier uso de usedPrefix aquí sea seguro o maneje el caso en que no exista.
 if (typeof plugin.after === 'function') {
 try {
 await plugin.after.call(this, m, extra)
@@ -486,16 +494,12 @@ console.error(e)
 if (m.coin)
 conn.reply(m.chat, `❮✦❯ Utilizaste ${+m.coin} ${moneda}`, m)
 }
-break // Este break debería estar fuera del finally si quieres que el loop siga
-// O sea, si un plugin lanza un error, break termina el loop, si no, el loop continua.
-// Si el break está dentro del if ((usedPrefix = (match[0] || '')[0])), entonces solo se rompe si se encuentra un comando.
-// Considerando que el error se da en el finally, la lógica parece ser que el loop de plugins no siempre se rompe.
-}} // Este cierre de llave pertenece al for...in global.plugins
+break
+}} 
 
 } catch (e) {
 console.error(e)
 } finally {
-// usedPrefix está disponible aquí porque se declaró más arriba en el scope del handler
 if (opts['queque'] && m.text) {
 const quequeIndex = this.msgqueque.indexOf(m.id || m.key.id)
 if (quequeIndex !== -1)
@@ -543,10 +547,7 @@ stat.lastSuccess = now
 try {
 if (!opts['noprint']) await (await import(`./lib/print.js`)).default(m, this)
 } catch (e) { 
-console.log(m, m.quoted, e)} // <<< Esta es la línea 338, aquí 'usedPrefix' NO se usa directamente,
-                                // pero si 'print.js' o 'm' (con su propiedad 'usedPrefix')
-                                // la causan, entonces el problema es en el scope de esas.
-                                // La solución de mover 'let usedPrefix' resolverá esto.
+console.log(m, m.quoted, e)}
 let settingsREAD = global.db.data.settings[this.user.jid] || {}  
 if (opts['autoread']) await this.readMessages([m.key])
 
@@ -557,8 +558,7 @@ if (!m.fromMe) return this.sendMessage(m.chat, { react: { text: emot, key: m.key
 function pickRandom(list) { return list[Math.floor(Math.random() * list.length)]}
 }}
 
-global.dfail = (type, m, conn, usedPrefix, command) => { // 'conn' es el tercer argumento
-
+global.dfail = (type, m, conn, usedPrefix, command) => {
     let edadaleatoria = ['10', '28', '20', '40', '18', '21', '15', '11', '9', '17', '25'].getRandom()
     let user2 = m.pushName || 'Anónimo'
     let verifyaleatorio = ['registrar', 'reg', 'verificar', 'verify', 'register'].getRandom()
