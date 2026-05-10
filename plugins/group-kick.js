@@ -1,56 +1,96 @@
-let handler = async (m, { conn, isAdmin, isOwner, text }) => {
-  if (!m.isGroup) return m.reply(`
-ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱
+let handler = async (m, { conn, isAdmin, isOwner, isROwner, isBotAdmin, text }) => {
+  let isGroup = m.chat.endsWith('@g.us')
+
+  if (!isGroup) return m.reply(`
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 ɢяυρσ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ Sσℓσ єη gяυρσѕ
+`.trim())
 
-ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - вσт* ㅤ ⫏⫏ ꒱
-  `.trim())
-
-  if (!isAdmin && !isOwner) return m.reply(`
-ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱
+  if (!isAdmin && !isOwner && !isROwner) return m.reply(`
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ α∂мιη 木 яєqυєяι∂σ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ Nєcєѕιтαѕ ѕєя α∂мιη
+`.trim())
 
-ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - вσт* ㅤ ⫏⫏ ꒱
-  `.trim())
+  if (!isBotAdmin) return m.reply(`
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ вσт 木 ѕιη α∂мιη ㅤ 性
 
-  let grupo = await conn.groupMetadata(m.chat)
-  let participantes = grupo.participants
-  let mensaje = text || '📢 *Atención* 📢'
+> ₊· ⫏⫏ ㅤ Eℓ вσт ηє¢єѕιтα ѕєя α∂мιη
+`.trim())
 
-  let listaMenciones = []
-  let numeros = ''
+  let user = null
 
-  for (let i = 0; i < participantes.length; i++) {
-    let user = participantes[i].id
-    listaMenciones.push(user)
-    numeros += `> ${i + 1}. @${user.split('@')[0]}\n`
+  if (m.quoted) {
+    user = m.quoted.sender
+  } else if (m.mentionedJid && m.mentionedJid[0]) {
+    user = m.mentionedJid[0]
+  } else if (text) {
+    let numeros = text.match(/\d+/g)
+    if (numeros) {
+      user = numeros[0] + '@s.whatsapp.net'
+    }
   }
 
-  let caption = `
-ㅤ    ꒰  ㅤ 📢 ㅤ *αℓуα - TΛGΛLL* ㅤ ⫏⫏  ꒱
-ㅤ    ⿻ ㅤ ✿ ㅤ мєη¢ισи 木 gяυρσ ㅤ 性
+  if (!user) return m.reply(`
+ㅤ    ꒰  ㅤ 📝 ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ υѕσ 木 cσrrєctσ ㅤ 性
 
-> ₊· ⫏⫏ ㅤ *📝 Mensaje:* ${mensaje}
-> ₊· ⫏⫏ ㅤ *👥 Miembros:* ${participantes.length}
+> ₊· ⫏⫏ ㅤ *Usa:* #kick @usuario
+> ₊· ⫏⫏ ㅤ *Usa:* Responde al mensaje
+`.trim())
 
-${numeros}
+  const detectwhat = user.includes('@lid') ? '@lid' : '@s.whatsapp.net'
+  const isROwnerTarget = global.owner ? [...global.owner.map(([number]) => number)].map(v => v.replace(/\D/g, "") + detectwhat).includes(user) : false
+  const isOwnerTarget = isROwnerTarget || user === conn.user.jid
 
-ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - вσт* ㅤ ⫏⫏ ꒱
-  `.trim()
+  if (isOwnerTarget) return m.reply(`
+ㅤ    ꒰  ㅤ ☄️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ ησ 木 ρυє∂єѕ ㅤ 性
 
-  await conn.sendMessage(m.chat, { text: caption, mentions: listaMenciones }, { quoted: m })
-  await m.react('📢')
+> ₊· ⫏⫏ ㅤ Nσ ρυє∂єѕ єχρυℓѕαя αℓ ¢яєα∂σя
+`.trim())
+
+  let nombre = user.split('@')[0]
+
+  try {
+    await conn.groupParticipantsUpdate(m.chat, [user], 'remove')
+    await conn.sendMessage(m.chat, {
+      text: `
+ㅤ    ꒰  ㅤ ☄️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ єχρυℓѕα∂σ 木 🚫 ㅤ 性
+
+> ₊· ⫏⫏ ㅤ *Usuari@:* ${nombre}
+> ₊· ⫏⫏ ㅤ *Accion:* Expulsad@
+      `.trim(),
+      mentions: [user],
+      contextInfo: {
+        forwardingScore: 999,
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: "120363407253203904@newsletter",
+          newsletterName: "αℓуα - ¢нαηηєℓ",
+          serverMessageId: 1
+        }
+      }
+    }, { quoted: m })
+  } catch (e) {
+    await m.reply(`
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 єχρυℓѕαя ㅤ 性
+
+> ₊· ⫏⫏ ㅤ *Error:* ${e.message}
+    `.trim())
+  }
 }
 
-handler.help = ['tagall']
+handler.help = ['kick']
 handler.tags = ['group']
-handler.command = ['tagall', 'todos', 'mencionar']
-handler.desc = 'ᴍᴇɴᴄɪᴏɴᴀ ᴀ ᴛᴏᴅᴏꜱ ʟᴏꜱ ᴍɪᴇᴍʙʀᴏꜱ ᴅᴇʟ ɢʀᴜᴘᴏ'
+handler.command = ['kick', 'expulsar']
+handler.desc = 'ᴇxᴘᴜʟsᴀʀ ᴀ ᴜɴ ᴜsᴜᴀʀɪᴏ'
 handler.group = true
-handler.admin = true
 
 export default handler
