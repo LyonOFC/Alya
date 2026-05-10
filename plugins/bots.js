@@ -22,7 +22,7 @@ let handler = async (m, { conn, isOwner }) => {
 
   const texto = `
 
-  🌊 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽
+  ☄️ 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽
 
   𝘽𝙊𝙏𝙎 𝙑𝙄𝙉𝘾𝙐𝙇𝘼𝘿𝙊𝙎
 
