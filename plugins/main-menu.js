@@ -4,10 +4,11 @@ import { xpRange } from '../lib/levelling.js'
 
 const tags = {
   main: 'ρяιη¢ιραℓ',
+  owner: 'σωηєя',
   group: 'ɢяυρσѕ',
-  economy: 'є¢σησму',
   serbot: 'ѕєявσт',
-  owner: 'σωηєя'
+  sticker: 'ѕтι¢кєяѕ',
+  info: 'ιηƒσ'
 }
 
 const defaultMenu = {
