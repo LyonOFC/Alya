@@ -9,7 +9,7 @@ let handler = async (m, { conn, text, isAdmin, isOwner, isROwner, isBotAdmin }) 
 `.trim())
 
   if (!isAdmin && !isOwner && !isROwner) return m.reply(`
-ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ꒰  ㅤ ❌ � *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ α∂мιη 木 яєqυєяι∂σ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ Nєcєѕιтαѕ ѕєя α∂мιη
@@ -25,22 +25,24 @@ let handler = async (m, { conn, text, isAdmin, isOwner, isROwner, isBotAdmin }) 
   let groupMetadata = await conn.groupMetadata(m.chat)
   let participants = groupMetadata.participants
   let memberCount = participants.length
-  let mensaje = text ? text : '📢 @everyone'
+  let mensaje = text ? text : '📢'
 
   let mentions = []
-  let tagAllText = `ㅤ    ꒰  ㅤ 📢 ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
-ㅤ    ⿻ ㅤ ✿ ㅤ тαgαℓℓ 木 мєη¢ιση ㅤ 性
-
-> ₊· ⫏⫏ ㅤ *Mensaje:* ${mensaje}
-> ₊· ⫏⫏ ㅤ *Miembros:* ${memberCount}
-
-`
-
   for (let i = 0; i < participants.length; i++) {
     let user = participants[i].id
     if (user === conn.user.jid) continue
-    tagAllText += `✦ ${user.split('@')[0]}\n`
     mentions.push(user)
+  }
+
+  let tagAllText = `ㅤ    ꒰  ㅤ 📢 ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ тαgαℓℓ 木 мєη¢ιση ㅤ 性
+
+> ₊· ⫏⫏ ㅤ ${mensaje}
+
+`
+
+  for (let i = 0; i < mentions.length; i++) {
+    tagAllText += `✦ @${mentions[i].split('@')[0]}\n`
   }
 
   tagAllText += `
