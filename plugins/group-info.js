@@ -1,75 +1,96 @@
 let handler = async (m, { conn }) => {
-  let isGroup = m.chat.endsWith('@g.us')
-
-  if (!isGroup) return m.reply(`
+  if (!m.isGroup) return m.reply(`
 ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 ɢяυρσ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ Sσℓσ єη gяυρσѕ
 `.trim())
 
-  let grupo = await conn.groupMetadata(m.chat)
-  let participantes = grupo.participants
-  let admins = participantes.filter(v => v.admin === 'admin' || v.admin === 'superadmin').map(v => v.id)
-  let ownerGroup = grupo.owner || (admins.length > 0 ? admins[0] : null)
-  let fechaCreacion = grupo.creation ? new Date(grupo.creation * 1000).toLocaleDateString() : 'No disponible'
-  let descripcion = grupo.desc || 'Sin descripcion'
-  let memberCount = participantes.length
-  let adminCount = admins.length
-  let nombreGrupo = grupo.subject
+  await m.react('📊')
 
-  let mentions = []
-  let ownerMention = ''
-  let adminsMention = ''
-
-  if (ownerGroup && ownerGroup !== 'No disponible') {
-    mentions.push(ownerGroup)
-    ownerMention = `@${ownerGroup.split('@')[0]}`
-  } else {
-    ownerMention = 'No disponible'
-  }
-
-  for (let admin of admins) {
-    mentions.push(admin)
-    adminsMention += `✦ @${admin.split('@')[0]}\n`
-  }
-
-  let texto = `
+  try {
+    let groupMetadata = await conn.groupMetadata(m.chat)
+    let participants = groupMetadata.participants
+    let botNumber = conn.user.jid
+    
+    let admins = []
+    let regulars = []
+    let botIsAdmin = false
+    
+    for (let member of participants) {
+      if (member.admin === 'admin' || member.admin === 'superadmin') {
+        admins.push(member.id)
+        if (member.id === botNumber) botIsAdmin = true
+      } else {
+        regulars.push(member.id)
+      }
+    }
+    
+    let totalMiembros = participants.length
+    let totalAdmins = admins.length
+    let totalRegulares = regulars.length
+    
+    let groupIcon = 'https://files.catbox.moe/jg0te7.jpeg'
+    try {
+      let icon = await conn.profilePictureUrl(m.chat, 'image')
+      if (icon) groupIcon = icon
+    } catch (e) {}
+    
+    let descripcion = groupMetadata.desc || 'Sin descripcion'
+    let fechaCreacion = groupMetadata.creation ? new Date(groupMetadata.creation * 1000).toLocaleDateString() : 'Desconocida'
+    let esRestringido = groupMetadata.announce ? '🔒 Cerrado' : '🔓 Abierto'
+    
+    let caption = `
 ㅤ    ꒰  ㅤ 📊 ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ ιηƒσ 木 gяυρσ ㅤ 性
 
-> ₊· ⫏⫏ ㅤ *Nombre:* ${nombreGrupo}
+> ₊· ⫏⫏ ㅤ *Nombre:* ${groupMetadata.subject}
 > ₊· ⫏⫏ ㅤ *ID:* ${m.chat}
 > ₊· ⫏⫏ ㅤ *Creado:* ${fechaCreacion}
-> ₊· ⫏⫏ ㅤ *Dueño:* ${ownerMention}
-> ₊· ⫏⫏ ㅤ *Miembros:* ${memberCount}
-> ₊· ⫏⫏ ㅤ *Admins:* ${adminCount}
+> ₊· ⫏⫏ ㅤ *Miembros:* ${totalMiembros}
+> ₊· ⫏⫏ ㅤ *Admins:* ${totalAdmins}
+> ₊· ⫏⫏ ㅤ *Modo:* ${esRestringido}
+> ₊· ⫏⫏ ㅤ *Bot Admin:* ${botIsAdmin ? '✅ Si' : '❌ No'}
 
-${adminsMention ? '> ₊· ⫏⫏ ㅤ *Lista Admins:*\n' + adminsMention : ''}
 > ₊· ⫏⫏ ㅤ *Descripcion:*
 > ₊· ⫏⫏ ㅤ ${descripcion}
 
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
-  `.trim()
+    `.trim()
 
-  await conn.sendMessage(m.chat, {
-    text: texto,
-    mentions: mentions,
-    contextInfo: {
-      forwardingScore: 999,
-      isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: "120363407253203904@newsletter",
-        newsletterName: "αℓуα - ¢нαηηєℓ",
-        serverMessageId: 1
+    await conn.sendMessage(m.chat, {
+      image: { url: groupIcon },
+      caption: caption,
+      mentions: admins,
+      contextInfo: {
+        forwardingScore: 999,
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: "120363407253203904@newsletter",
+          newsletterName: "αℓуα - ¢нαηηєℓ",
+          serverMessageId: 1
+        }
       }
-    }
-  }, { quoted: m })
+    }, { quoted: m })
+    
+    await m.react('✅')
+    
+  } catch (error) {
+    console.error(error)
+    await m.reply(`
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 ιηƒσ ㅤ 性
+
+> ₊· ⫏⫏ ㅤ *Error:* ${error.message}
+    `.trim())
+    await m.react('❌')
+  }
 }
 
 handler.help = ['infogrupo']
 handler.tags = ['group']
-handler.command = ['infogrupo', 'groupinfo', 'gp']
+handler.command = ['infogrupo', 'groupinfo', 'gpinfo']
 handler.desc = 'ᴍᴜᴇꜱᴛʀᴀ ʟᴀ ɪɴꜰᴏʀᴍᴀᴄɪᴏ́ɴ ᴅᴇʟ ɢʀᴜᴘᴏ'
+handler.group = true
 
 export default handler
