@@ -5,15 +5,14 @@ import { xpRange } from '../lib/levelling.js'
 const defaultMenu = {
   before: `
 ╭━━━━━━━━━━━━━━━╮
-┃  ☄️ ALYA SUB ☄️
-┃  Versión 1.0.0
-┃  Usuario: %name
-┃  Nivel: %level
+┃  ☄️ 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 ☄️
+┃  𝙑𝙚𝙧𝙨𝙞𝙤𝙣 1.0.0
+┃  𝙐𝙨𝙪𝙖𝙧𝙞𝙤: %name
 ╰━━━━━━━━━━━━━━━╯
 
 %readmore
 
-▸ COMANDOS DISPONIBLES ◂
+𝙲𝙾𝙼𝙰𝙽𝙳𝙾𝚂 𝙳𝙸𝚂𝙿𝙾𝙽𝙸𝙱𝙻𝙴𝚂
 
 `,
   header: '\n▸ %category ◂\n',
@@ -21,13 +20,14 @@ const defaultMenu = {
   footer: '',
   after: `
 
-▸ INFORMACIÓN ◂
-   ✦ Tiempo activo: %muptime
-   ✦ Usuarios: %totalreg
+𝙸𝙽𝙵𝙾𝚁𝙼𝙰𝙲𝙸𝙾́𝙽
+
+   ✦ 𝙏𝙞𝙚𝙢𝙥𝙤 𝙖𝙘𝙩𝙞𝙫𝙤: %muptime
+   ✦ 𝙐𝙨𝙪𝙖𝙧𝙞𝙤𝙨: %totalreg
 
 ╭━━━━━━━━━━━━━━━╮
-┃  CREADO POR LYONN
-┃  Alya Sub - ☄️
+┃𝘾𝙍𝙀𝘼𝘿𝙊 𝙋𝙊𝙍 𝙇𝙔𝙊𝙉𝙉
+┃  𝘼𝙡𝙮𝙖 𝙎𝙪𝙗 ☄️ 
 ╰━━━━━━━━━━━━━━━╯
 `
 }
@@ -44,15 +44,14 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         help: Array.isArray(p.help) ? p.help : [p.help],
         tags: Array.isArray(p.tags) ? p.tags : [p.tags],
         prefix: 'customPrefix' in p,
-        desc: p.desc || 'Sin descripción'
+        desc: p.desc || '𝙎𝙞𝙣 𝙙𝙚𝙨𝙘𝙧𝙞𝙥𝙘𝙞𝙤́𝙣'
       }))
 
     let bannerFinal = 'https://files.catbox.moe/jg0te7.jpeg'
 
-    // Definir solo las categorías que quieres mostrar
     const categoriasMostrar = {
-      owner: 'OWNER',
-      group: 'GRUPOS'
+      owner: '𝙊𝙒𝙉𝙀𝙍',
+      group: '𝙂𝙍𝙐𝙋𝙊𝙎'
     }
 
     const textoMenu = [
@@ -95,7 +94,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
           newsletterJid: "120363407253203904@newsletter",
-          newsletterName: "Alya Chanel",
+          newsletterName: "𝘼𝙡𝙮𝙖 𝘾𝙝𝙖𝙣𝙚𝙡",
           serverMessageId: 1
         }
       }
@@ -105,7 +104,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
 
   } catch (e) {
     console.error('Error en el menú:', e)
-    await m.reply(`❌ Error: ${e.message}`)
+    await m.reply(`❌ 𝙴𝚛𝚛𝚘𝚛: ${e.message}`)
   }
 }
 
@@ -124,4 +123,4 @@ function clockString(ms) {
   let m = Math.floor(ms / 60000) % 60
   let s = Math.floor(ms / 1000) % 60
   return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':')
-  }
+}
