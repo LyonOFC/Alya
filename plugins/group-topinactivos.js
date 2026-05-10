@@ -23,10 +23,14 @@ let handler = async (m, { conn }) => {
       let userId = member.id
       if (userId === botNumber) continue
       
-      let userData = global.db.data.users[userId] || {}
+      if (!global.db.data.users[userId]) {
+        global.db.data.users[userId] = {}
+        global.db.data.users[userId].messageCount = 0
+      }
+      
+      let userData = global.db.data.users[userId]
       let messageCount = userData.messageCount || 0
       
-      // Solo agregar si es un número de teléfono válido (contiene @s.whatsapp.net)
       if (userId.includes('@s.whatsapp.net')) {
         userStats.push({
           id: userId,
@@ -42,15 +46,19 @@ let handler = async (m, { conn }) => {
     let mensajes = ''
     let razones = ['modo fantasma', 'solo para leer', 'modo ahorro de bateria', 'desconectado de la realidad', 'se fue a vivir al campo']
     
-    for (let i = 0; i < topInactivos.length; i++) {
-      let user = topInactivos[i]
-      let motivo = ''
-      if (user.count === 0) motivo = razones[0]
-      else if (user.count < 3) motivo = razones[1]
-      else if (user.count < 8) motivo = razones[2]
-      else motivo = razones[3]
-      
-      mensajes += `> ${i + 1}. @${user.id.split('@')[0]} → ${user.count} msj (${motivo})\n`
+    if (topInactivos.length === 0) {
+      mensajes = '> No hay miembros en el grupo'
+    } else {
+      for (let i = 0; i < topInactivos.length; i++) {
+        let user = topInactivos[i]
+        let motivo = ''
+        if (user.count === 0) motivo = razones[0]
+        else if (user.count < 3) motivo = razones[1]
+        else if (user.count < 8) motivo = razones[2]
+        else motivo = razones[3]
+        
+        mensajes += `> ${i + 1}. @${user.id.split('@')[0]} → ${user.count} msj (${motivo})\n`
+      }
     }
     
     let caption = `
@@ -59,7 +67,7 @@ let handler = async (m, { conn }) => {
 
 > ₊· ⫏⫏ ㅤ *Top 5 inactivos:*
 
-${mensajes || '> No hay miembros inactivos con número válido'}
+${mensajes}
 
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏ ꒱
     `.trim()
