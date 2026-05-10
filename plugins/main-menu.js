@@ -4,6 +4,7 @@ import { xpRange } from '../lib/levelling.js'
 
 const tags = {
   owner: '𝙊𝙒𝙉𝙀𝙍',
+  rpg: '𝙍𝙋𝙂',
   group: '𝙂𝙍𝙐𝙋𝙊𝙎',
   serbot: '𝙎𝙀𝙍𝘽𝙊𝙏'
 }
