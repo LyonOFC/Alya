@@ -2,6 +2,8 @@ let handler = async (m, { conn }) => {
   let nomor = '59177474230'
   let nombre = 'Lyonn'
   
+  let bio = (await conn.fetchStatus(nomor + '@s.whatsapp.net').catch(_ => {}))?.status || '☄️ Creador de Alya Sub'
+  
   let fotoPerfil = 'https://files.catbox.moe/jg0te7.jpeg'
   try {
     let pp = await conn.profilePictureUrl(nomor + '@s.whatsapp.net', 'image')
@@ -14,7 +16,8 @@ let handler = async (m, { conn }) => {
 
 > ₊· ⫏⫏ ㅤ *🎭 ℓүσηη*
 > ₊· ⫏⫏ ㅤ *Rol:* Creador
-> ₊· ⫏⫏ ㅤ *Contacto:* https://wa.me/${nomor}
+> ₊· ⫏⫏ ㅤ *Bio:* ${bio}
+> ₊· ⫏⫏ ㅤ *Contacto:* wa.me/${nomor}
 
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
   `.trim()
