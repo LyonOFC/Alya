@@ -108,7 +108,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
 handler.help = ['menu', 'menú', 'help', 'ayuda']
 handler.tags = ['main']
 handler.command = ['menu', 'menú', 'help', 'ayuda']
-handler.register = false
+handler.register = true
 
 export default handler
 
