@@ -2,17 +2,23 @@ import fs from 'fs'
 import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
 
+const tags = {
+  owner: '𝙊𝙒𝙉𝙀𝙍',
+  group: '𝙂𝙍𝙐𝙋𝙊𝙎',
+  serbot: '𝙎𝙀𝙍𝘽𝙊𝙏'
+}
+
 const defaultMenu = {
   before: `
 ╭━━━━━━━━━━━━━━━╮
-┃  ☄️ 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 ☄️
+┃  🌊 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 🌊
 ┃  𝙑𝙚𝙧𝙨𝙞𝙤𝙣 1.0.0
 ┃  𝙐𝙨𝙪𝙖𝙧𝙞𝙤: %name
 ╰━━━━━━━━━━━━━━━╯
 
 %readmore
 
-𝙲𝙾𝙼𝙰𝙽𝙳𝙾𝚂 𝙳𝙸𝚂𝙿𝙾𝙽𝙸𝙱𝙻𝙴𝚂
+𝘾𝙊𝙈𝘼𝙉𝘿𝙊𝙎 𝘿𝙄𝙎𝙋𝙊𝙉𝙄𝘽𝙇𝙀𝙎
 
 `,
   header: '\n▸ %category ◂\n',
@@ -20,7 +26,7 @@ const defaultMenu = {
   footer: '',
   after: `
 
-𝙸𝙽𝙵𝙾𝚁𝙼𝙰𝙲𝙸𝙾́𝙽
+𝙄𝙉𝙁𝙊𝙍𝙈𝘼𝘾𝙄𝙊́𝙉
 
    ✦ 𝙏𝙞𝙚𝙢𝙥𝙤 𝙖𝙘𝙩𝙞𝙫𝙤: %muptime
    ✦ 𝙐𝙨𝙪𝙖𝙧𝙞𝙤𝙨: %totalreg
@@ -49,14 +55,9 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
 
     let bannerFinal = 'https://files.catbox.moe/jg0te7.jpeg'
 
-    const categoriasMostrar = {
-      owner: '𝙊𝙒𝙉𝙀𝙍',
-      group: '𝙂𝙍𝙐𝙋𝙊𝙎'
-    }
-
     const textoMenu = [
       defaultMenu.before,
-      ...Object.keys(categoriasMostrar).map(tag => {
+      ...Object.keys(tags).map(tag => {
         const cmds = help
           .filter(menu => menu.tags?.includes(tag))
           .map(menu => menu.help.map(h => 
@@ -65,7 +66,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
               .replace(/%desc/g, menu.desc)
           ).join('\n')).join('\n')
         return cmds ? [
-          defaultMenu.header.replace(/%category/g, categoriasMostrar[tag]),
+          defaultMenu.header.replace(/%category/g, tags[tag]),
           cmds,
           defaultMenu.footer
         ].join('\n') : ''
@@ -100,7 +101,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       }
     }, { quoted: m })
 
-    await m.react('📡')
+    await m.react('☄️')
 
   } catch (e) {
     console.error('Error en el menú:', e)
