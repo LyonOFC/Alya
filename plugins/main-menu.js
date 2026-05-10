@@ -2,6 +2,7 @@ import fs from 'fs'
 import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
 import fetch from 'node-fetch'
+import path from 'path'
 
 const tags = {
   main: 'ρяιη¢ιραℓ',
@@ -35,6 +36,29 @@ const defaultMenu = {
 ㅤ    ꒰  ㅤ 🕸️ ㅤ *ℓүσηη* ㅤ ⫏⫏  ꒱
 > ₊· ⫏⫏ ㅤ ✿ 木 性 ㅤ αℓуα
 `
+}
+
+// Función para descargar y guardar el audio localmente
+async function descargarAudio(url, rutaDestino) {
+  try {
+    const response = await fetch(url)
+    if (!response.ok) throw new Error(`Error al descargar: ${response.status}`)
+    const buffer = await response.buffer()
+    fs.writeFileSync(rutaDestino, buffer)
+    return true
+  } catch (error) {
+    console.error('Error al descargar audio:', error)
+    return false
+  }
+}
+
+// Ruta donde se guardará el audio localmente
+const audioPath = path.join(process.cwd(), 'tmp', 'menu_audio.mp3')
+
+// Verificar si el audio ya existe, si no, descargarlo
+if (!fs.existsSync(audioPath)) {
+  console.log('Descargando audio del menú...')
+  await descargarAudio('https://files.catbox.moe/i427hk.mp3', audioPath)
 }
 
 const handler = async (m, { conn, usedPrefix: _p }) => {
@@ -76,7 +100,6 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       }))
 
     let bannerFinal = 'https://files.catbox.moe/jg0te7.jpeg'
-    let audioURL = 'https://files.catbox.moe/i427hk.mp3'
 
     const textoMenu = [
       defaultMenu.before,
@@ -123,17 +146,16 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       }
     }, { quoted: m })
 
-    try {
-      let res = await fetch(audioURL)
-      let audioBuffer = await res.buffer()
-      
+    // Enviar el audio descargado localmente
+    if (fs.existsSync(audioPath)) {
+      const audioBuffer = fs.readFileSync(audioPath)
       await conn.sendMessage(m.chat, {
         audio: audioBuffer,
         mimetype: 'audio/mpeg',
         ptt: true
       }, { quoted: m })
-    } catch (e) {
-      console.error('Error al enviar el audio:', e)
+    } else {
+      console.log('Archivo de audio no encontrado')
     }
 
     await m.react('🕸️')
