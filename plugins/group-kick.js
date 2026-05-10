@@ -1,52 +1,96 @@
-let handler = async (m, { conn, isAdmin, isGroup, mentionJid, args, isOwner, isBotAdmin }) => {
-  if (!isGroup) return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ єѕтє ¢σмαη∂σ ѕσℓσ ƒυη¢ισηα єη gяυρσѕ', m)
-  if (!isAdmin) return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ѕσℓσ α∂мιηιѕтяα∂σяєѕ ρυє∂єη υѕαя єѕтσ', m)
-  if (!isBotAdmin) return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ℓα вσт ∂євє ѕєя α∂мιη', m)
+let handler = async (m, { conn, isAdmin, isOwner, isROwner, isBotAdmin, text }) => {
+  let isGroup = m.chat.endsWith('@g.us')
 
-  let user = mentionJid && mentionJid[0] ? mentionJid[0] : args[0] ? args[0].replace(/[^0-9]/g, '') + '@s.whatsapp.net' : false
-  if (!user) return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ мєη¢ισηα αℓ υѕυαяισ', m)
+  if (!isGroup) return m.reply(`
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 ɢяυρσ ㅤ 性
 
-  if (isOwner && user === conn.user.jid) {
-    return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ησ ρυє∂єѕ єχρυℓѕαя αℓ ∂υєñσ ∂є ℓα вσт', m)
+> ₊· ⫏⫏ ㅤ Sσℓσ єη gяυρσѕ
+`.trim())
+
+  if (!isAdmin && !isOwner && !isROwner) return m.reply(`
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ α∂мιη 木 яєqυєяι∂σ ㅤ 性
+
+> ₊· ⫏⫏ ㅤ Nєcєѕιтαѕ ѕєя α∂мιη
+`.trim())
+
+  if (!isBotAdmin) return m.reply(`
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ вσт 木 ѕιη α∂мιη ㅤ 性
+
+> ₊· ⫏⫏ ㅤ Eℓ вσт ηє¢єѕιтα ѕєя α∂мιη
+`.trim())
+
+  let user = null
+
+  if (m.quoted) {
+    user = m.quoted.sender
+  } else if (m.mentionedJid && m.mentionedJid[0]) {
+    user = m.mentionedJid[0]
+  } else if (text) {
+    let numeros = text.match(/\d+/g)
+    if (numeros) {
+      user = numeros[0] + '@s.whatsapp.net'
+    }
   }
 
-  let groupMetadata = await conn.groupMetadata(m.chat)
-  let isUserAdmin = groupMetadata.participants.find(v => v.id === user)?.admin === 'admin' || groupMetadata.participants.find(v => v.id === user)?.admin === 'superadmin'
-  if (isUserAdmin) return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ησ ρυє∂єѕ єχρυℓѕαя α υη α∂мιηιѕтяα∂σя', m)
+  if (!user) return m.reply(`
+ㅤ    ꒰  ㅤ 📝 ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ υѕσ 木 cσrrєctσ ㅤ 性
 
-  let userName = await conn.getName(user)
+> ₊· ⫏⫏ ㅤ *Usa:* #kick @usuario
+> ₊· ⫏⫏ ㅤ *Usa:* Responde al mensaje
+`.trim())
 
-  await conn.reply(m.chat, `ㅤ    ꒰  ㅤ ⏳ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єχρυℓѕαη∂σ 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ${userName}`, m)
-  await conn.groupParticipantsUpdate(m.chat, [user], 'remove')
+  const detectwhat = user.includes('@lid') ? '@lid' : '@s.whatsapp.net'
+  const isROwnerTarget = global.owner ? [...global.owner.map(([number]) => number)].map(v => v.replace(/\D/g, "") + detectwhat).includes(user) : false
+  const isOwnerTarget = isROwnerTarget || user === conn.user.jid
 
-  let texto = `
-ㅤ    ꒰  ㅤ 🕸️ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱
-ㅤ    ⿻ ㅤ ✿ ㅤ єχρυℓѕα∂σ 木 性 ㅤ ✿
+  if (isOwnerTarget) return m.reply(`
+ㅤ    ꒰  ㅤ ☄️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ ησ 木 ρυє∂єѕ ㅤ 性
 
-> ₊· ⫏⫏ ㅤ υѕυαяι@: ${userName}
-> ₊· ⫏⫏ ㅤ α¢¢ιση: єχρυℓѕα∂@
+> ₊· ⫏⫏ ㅤ Nσ ρυє∂єѕ єχρυℓѕαя αℓ ¢яєα∂σя
+`.trim())
 
-ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱
-ㅤ    ⿻ ㅤ 性 ㅤ ѕιѕтємα єנє¢υтα∂σ ㅤ ✿
-`.trim()
+  let nombre = user.split('@')[0]
 
-  await conn.sendMessage(m.chat, { text: texto, mentions: [user], contextInfo: {
-    forwardingScore: 999,
-    isForwarded: true,
-    forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363407253203904@newsletter",
-      newsletterName: "αℓуα - ¢нαηηєℓ",
-      serverMessageId: 1
-    }
-  } }, { quoted: m })
+  try {
+    await conn.groupParticipantsUpdate(m.chat, [user], 'remove')
+    await conn.sendMessage(m.chat, {
+      text: `
+ㅤ    ꒰  ㅤ ☄️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ єχρυℓѕα∂σ 木 🚫 ㅤ 性
+
+> ₊· ⫏⫏ ㅤ *Usuari@:* ${nombre}
+> ₊· ⫏⫏ ㅤ *Accion:* Expulsad@
+      `.trim(),
+      mentions: [user],
+      contextInfo: {
+        forwardingScore: 999,
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: "120363407253203904@newsletter",
+          newsletterName: "αℓуα - ¢нαηηєℓ",
+          serverMessageId: 1
+        }
+      }
+    }, { quoted: m })
+  } catch (e) {
+    await m.reply(`
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 єχρυℓѕαя ㅤ 性
+
+> ₊· ⫏⫏ ㅤ *Error:* ${e.message}
+    `.trim())
+  }
 }
 
 handler.help = ['kick']
 handler.tags = ['group']
 handler.command = ['kick', 'expulsar']
-handler.desc = 'ᴇxᴘᴜʟꜱᴀʀ ᴀ ᴜɴ ᴜꜱᴜᴀʀɪᴏ'
+handler.desc = 'ᴇxᴘᴜʟsᴀʀ ᴀ ᴜɴ ᴜsᴜᴀʀɪᴏ'
 handler.group = true
-handler.admin = true
-handler.botAdmin = true
 
 export default handler
