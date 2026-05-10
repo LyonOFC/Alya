@@ -1,21 +1,10 @@
-let handler = async (m, { conn, isAdmin, mentionJid, args, isOwner }) => {
-  let isGroup = m.chat.endsWith('@g.us')
-  
-  if (!isGroup) {
-    return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ єѕтє ¢σмαη∂σ ѕσℓσ ƒυη¢ισηα єη gяυρσѕ', m)
-  }
-  
-  let groupAdmins = await conn.groupMetadata(m.chat).then(res => res.participants.filter(v => v.admin).map(v => v.id))
-  let isAdminUser = groupAdmins.includes(m.sender)
-  
-  if (!isAdminUser) {
-    return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ѕσℓσ α∂мιηιѕтяα∂σяєѕ ρυє∂єη υѕαя єѕтσ', m)
-  }
+let handler = async (m, { conn, isAdmin, isGroup, mentionJid, args, isOwner, isBotAdmin }) => {
+  if (!isGroup) return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ єѕтє ¢σмαη∂σ ѕσℓσ ƒυη¢ισηα єη gяυρσѕ', m)
+  if (!isAdmin) return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ѕσℓσ α∂мιηιѕтяα∂σяєѕ ρυє∂єη υѕαя єѕтσ', m)
+  if (!isBotAdmin) return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ℓα вσт ∂євє ѕєя α∂мιη', m)
 
   let user = mentionJid && mentionJid[0] ? mentionJid[0] : args[0] ? args[0].replace(/[^0-9]/g, '') + '@s.whatsapp.net' : false
-  if (!user) {
-    return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ мєη¢ισηα αℓ υѕυαяισ', m)
-  }
+  if (!user) return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ мєη¢ισηα αℓ υѕυαяισ', m)
 
   if (isOwner && user === conn.user.jid) {
     return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ησ ρυє∂єѕ єχρυℓѕαя αℓ ∂υєñσ ∂є ℓα вσт', m)
@@ -23,9 +12,7 @@ let handler = async (m, { conn, isAdmin, mentionJid, args, isOwner }) => {
 
   let groupMetadata = await conn.groupMetadata(m.chat)
   let isUserAdmin = groupMetadata.participants.find(v => v.id === user)?.admin === 'admin' || groupMetadata.participants.find(v => v.id === user)?.admin === 'superadmin'
-  if (isUserAdmin) {
-    return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ησ ρυє∂єѕ єχρυℓѕαя α υη α∂мιηιѕтяα∂σя', m)
-  }
+  if (isUserAdmin) return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - вσт* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ησ ρυє∂єѕ єχρυℓѕαя α υη α∂мιηιѕтяα∂σя', m)
 
   let userName = await conn.getName(user)
 
@@ -58,5 +45,8 @@ handler.help = ['kick']
 handler.tags = ['group']
 handler.command = ['kick', 'expulsar']
 handler.desc = 'ᴇxᴘᴜʟꜱᴀʀ ᴀ ᴜɴ ᴜꜱᴜᴀʀɪᴏ'
+handler.group = true
+handler.admin = true
+handler.botAdmin = true
 
 export default handler
