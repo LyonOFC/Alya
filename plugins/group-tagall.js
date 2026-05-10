@@ -17,7 +17,7 @@ let handler = async (m, { conn, isAdmin, isOwner, text }) => {
 
   let grupo = await conn.groupMetadata(m.chat)
   let participantes = grupo.participants
-  let mensaje = text || '📢 *Atencion*'
+  let mensaje = text || '📢 Atencion'
 
   let listaMenciones = []
   let numeros = ''
