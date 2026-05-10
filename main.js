@@ -75,9 +75,9 @@ global.timestamp = { start: new Date() };
 const __dirname = global.__dirname(import.meta.url);
 
 console.log(chalk.bold.cyan('\n' + '▰'.repeat(60)));
-console.log(chalk.bold.yellow('   🌊 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 - 𝙎𝙄𝙎𝙏𝙀𝙈𝘼 𝘼𝘾𝙏𝙄𝙑𝘼𝘿𝙊 🌊'));
+console.log(chalk.bold.yellow('   🌊 ALYA SUB - SISTEMA ACTIVADO 🌊'));
 console.log(chalk.bold.cyan('▰'.repeat(60)));
-console.log(chalk.magenta('   「 𝙋𝙤𝙩𝙚𝙣𝙘𝙞𝙖 𝙮 𝙚𝙨𝙩𝙞𝙡𝙤 𝙚𝙣 𝙘𝙖𝙙𝙖 𝙢𝙚𝙣𝙨𝙖𝙟𝙚 」'));
+console.log(chalk.magenta('   「 Potencia y estilo en cada mensaje 」'));
 console.log(chalk.bold.cyan('▰'.repeat(60) + '\n'));
 
 global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse());
@@ -116,7 +116,6 @@ global.loadDatabase = async function loadDatabase() {
     msgs: {},
     sticker: {},
     settings: {},
-    welcome: {},
     ...(global.db.data || {}),
   };
   global.db.chain = lodash.chain(global.db.data);
@@ -297,11 +296,11 @@ async function handleLogin() {
   let loginMethod = await question(
     chalk.green(`\n` +
     `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n` +
-    `     🌊 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 𝙈𝙊𝘿𝙀 🌊\n` +
+    `     🌊 ALYA SUB MODE 🌊\n` +
     `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n` +
-    ` ¿Cómo deseas activar el bot?\n` +
+    ` ¿Como deseas activar el bot?\n` +
     `\n` +
-    ` 📱 Escribir "code" para código\n` +
+    ` 📱 Escribir "code" para codigo\n` +
     `    de emparejamiento\n` +
     `\n` +
     ` 🔳 Presionar Enter para QR\n` +
@@ -313,7 +312,7 @@ async function handleLogin() {
   loginMethod = loginMethod.toLowerCase().trim();
 
   if (loginMethod === 'code') {
-    let phoneNumber = await question(chalk.cyan('📱 Ingresa el número de WhatsApp (con código país, ej: 5215551234567):\n> '));
+    let phoneNumber = await question(chalk.cyan('📱 Ingresa el numero de WhatsApp (con codigo pais, ej: 5215551234567):\n> '));
     phoneNumber = phoneNumber.replace(/\D/g, '');
 
     if (phoneNumber.startsWith('52') && phoneNumber.length === 12) {
@@ -327,27 +326,27 @@ async function handleLogin() {
     if (typeof conn.requestPairingCode === 'function') {
       try {
         if (conn.ws.readyState === ws.OPEN) {
-          console.log(chalk.yellow('🌀 Generando código de emparejamiento...'));
+          console.log(chalk.yellow('🌀 Generando codigo de emparejamiento...'));
           let code = await conn.requestPairingCode(phoneNumber);
           code = code?.match(/.{1,4}/g)?.join('-') || code;
           console.log(chalk.bold.green('\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰'));
-          console.log(chalk.bold.yellow(`   🔐 𝘾𝙊𝘿𝙄𝙂𝙊 𝘿𝙀 𝙀𝙈𝙋𝘼𝙍𝙀𝙅𝘼𝙈𝙄𝙀𝙉𝙏𝙊:`));
+          console.log(chalk.bold.yellow(`   🔐 CODIGO DE EMPAREJAMIENTO:`));
           console.log(chalk.bold.cyan(`      ${code}`));
           console.log(chalk.bold.green('▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n'));
         } else {
-          console.log(chalk.red('❌ La conexión principal no está abierta. Intenta nuevamente.'));
+          console.log(chalk.red('❌ La conexion principal no esta abierta. Intenta nuevamente.'));
         }
       } catch (e) {
-        console.log(chalk.red('❌ Error al solicitar código de emparejamiento:'), e.message || e);
+        console.log(chalk.red('❌ Error al solicitar codigo de emparejamiento:'), e.message || e);
       }
     } else {
-      console.log(chalk.red('❌ Tu versión de Baileys no soporta emparejamiento por código.'));
+      console.log(chalk.red('❌ Tu version de Baileys no soporta emparejamiento por codigo.'));
     }
   } else {
-    console.log(chalk.yellow('🔳 Generando código QR, escanéalo con tu WhatsApp...\n'));
+    console.log(chalk.yellow('🔳 Generando codigo QR, escanealo con tu WhatsApp...\n'));
     conn.ev.on('connection.update', ({ qr }) => {
       if (qr) {
-        console.log(chalk.green('📱 ESCANEA ESTE CÓDIGO QR:'));
+        console.log(chalk.green('📱 ESCANEA ESTE CODIGO QR:'));
         qrcode.generate(qr, { small: true });
         console.log(chalk.yellow('\n⏳ Esperando escaneo...\n'));
       }
@@ -404,25 +403,112 @@ if (typeof global.gc === 'function') {
   console.log(chalk.yellow(`⚠️ [ALYA SUB] Para optimizar memoria, ejecuta con --expose-gc`));
 }
 
-// ==================== SISTEMA DE BIENVENIDA Y DESPEDIDA ====================
+// ==================== BIENVENIDA Y DESPEDIDA ====================
 
-function getWelcomeSettings() {
-  if (!global.db.data.welcome) {
-    global.db.data.welcome = {}
-    global.markDatabaseModified()
+conn.ev.on('group-participants-update', async (update) => {
+  try {
+    const { id, participants, action } = update
+    const botNumber = conn.user.jid.split(':')[0] + '@s.whatsapp.net'
+    
+    if (!global.db.data.chats[id]) {
+      global.db.data.chats[id] = {}
+    }
+    
+    const chatSettings = global.db.data.chats[id]
+    
+    if (action === 'add') {
+      if (!chatSettings.welcome) return
+      
+      for (let user of participants) {
+        if (user === botNumber) continue
+        
+        try {
+          let groupMetadata = await conn.groupMetadata(id)
+          let groupName = groupMetadata.subject
+          let groupDesc = groupMetadata.desc || 'Sin descripcion'
+          let memberCount = groupMetadata.participants.length
+          let userName = await conn.getName(user)
+          let groupPic
+          
+          try {
+            groupPic = await conn.profilePictureUrl(id, 'image')
+          } catch {
+            groupPic = 'https://files.catbox.moe/jg0te7.jpeg'
+          }
+          
+          let welcomeText = `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+🌊 ALYA SUB - BIENVENIDA
+▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+
+✨ Nombre: ${userName}
+👥 Grupo: ${groupName}
+📊 Miembros: ${memberCount}
+
+📝 Descripcion:
+${groupDesc}
+
+▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+Alya Sub - Potencia en cada mensaje`
+
+          await conn.sendMessage(id, {
+            image: { url: groupPic },
+            caption: welcomeText,
+            mentions: [user]
+          })
+          
+        } catch (err) {
+          console.error('Error en bienvenida:', err)
+        }
+      }
+    }
+    
+    if (action === 'remove') {
+      if (!chatSettings.goodbye) return
+      
+      for (let user of participants) {
+        if (user === botNumber) continue
+        
+        try {
+          let groupMetadata = await conn.groupMetadata(id)
+          let groupName = groupMetadata.subject
+          let memberCount = groupMetadata.participants.length
+          let userName = await conn.getName(user)
+          let groupPic
+          
+          try {
+            groupPic = await conn.profilePictureUrl(id, 'image')
+          } catch {
+            groupPic = 'https://files.catbox.moe/jg0te7.jpeg'
+          }
+          
+          let goodbyeText = `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+🌊 ALYA SUB - HASTA LUEGO
+▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+
+👋 Nombre: ${userName}
+👥 Grupo: ${groupName}
+📊 Miembros restantes: ${memberCount}
+
+▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+Alya Sub - Siempre bienvenido`
+
+          await conn.sendMessage(id, {
+            image: { url: groupPic },
+            caption: goodbyeText,
+            mentions: [user]
+          })
+          
+        } catch (err) {
+          console.error('Error en despedida:', err)
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Error en group-participants-update:', err)
   }
-  return global.db.data.welcome
-}
+})
 
-function isWelcomeEnabled(groupId) {
-  const settings = getWelcomeSettings()
-  return settings[groupId]?.welcome === true
-}
-
-function isGoodbyeEnabled(groupId) {
-  const settings = getWelcomeSettings()
-  return settings[groupId]?.goodbye === true
-}
+// ==================== FIN BIENVENIDA ====================
 
 async function connectionUpdate(update) {
   const { connection, lastDisconnect, isNewLogin } = update;
@@ -446,9 +532,9 @@ async function connectionUpdate(update) {
 
   if (connection === 'open') {
     console.log(chalk.bold.green('\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰'));
-    console.log(chalk.bold.yellow('   🌊 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 𝙃𝘼 𝙄𝙉𝙄𝘾𝙄𝘼𝘿𝙊 🌊'));
-    console.log(chalk.bold.cyan(`   👤 𝙐𝙨𝙪𝙖𝙧𝙞𝙤: ${conn.user?.name || 'Alya'}`));
-    console.log(chalk.bold.cyan(`   📱 𝙉𝙪𝙢𝙚𝙧𝙤: ${conn.user?.id?.split(':')[0] || 'Desconocido'}`));
+    console.log(chalk.bold.yellow('   🌊 ALYA SUB HA INICIADO 🌊'));
+    console.log(chalk.bold.cyan(`   👤 Usuario: ${conn.user?.name || 'Alya'}`));
+    console.log(chalk.bold.cyan(`   📱 Numero: ${conn.user?.id?.split(':')[0] || 'Desconocido'}`));
     console.log(chalk.bold.green('▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n'));
   }
 
@@ -458,7 +544,7 @@ async function connectionUpdate(update) {
     if (existsSync('./sessions/creds.json')) unlinkSync('./sessions/creds.json');
     console.log(
       chalk.bold.redBright(
-        `⚠️ Conexión reemplazada, reiniciando...`
+        `⚠️ Conexion reemplazada, reiniciando...`
       )
     );
     process.send('reset');
@@ -467,133 +553,31 @@ async function connectionUpdate(update) {
   if (connection === 'close') {
     switch (reason) {
       case DisconnectReason.badSession:
-        conn.logger.error(`❌ Sesión incorrecta, elimina la carpeta ${global.authFile}`);
+        conn.logger.error(`❌ Sesion incorrecta, elimina la carpeta ${global.authFile}`);
         break;
       case DisconnectReason.connectionClosed:
       case DisconnectReason.connectionLost:
       case DisconnectReason.timedOut:
-        conn.logger.warn(`⚠️ Conexión perdida, reconectando...`);
+        conn.logger.warn(`⚠️ Conexion perdida, reconectando...`);
         await global.reloadHandler(true).catch(console.error);
         break;
       case DisconnectReason.connectionReplaced:
-        conn.logger.error(`⚠️ Conexión reemplazada, se abrió otra sesión`);
+        conn.logger.error(`⚠️ Conexion reemplazada, se abrio otra sesion`);
         break;
       case DisconnectReason.loggedOut:
-        conn.logger.error(`❌ Sesión cerrada, elimina la carpeta ${global.authFile}`);
+        conn.logger.error(`❌ Sesion cerrada, elimina la carpeta ${global.authFile}`);
         break;
       case DisconnectReason.restartRequired:
         conn.logger.info(`🔄 Reinicio necesario`);
         await global.reloadHandler(true).catch(console.error);
         break;
       default:
-        conn.logger.warn(`❓ Desconexión desconocida: ${reason || ''}`);
+        conn.logger.warn(`❓ Desconexion desconocida: ${reason || ''}`);
         await global.reloadHandler(true).catch(console.error);
         break;
     }
   }
 }
-
-// ==================== EVENTO DE BIENVENIDA Y DESPEDIDA ====================
-
-conn.ev.on('group-participants-update', async (update) => {
-  try {
-    const { id, participants, action } = update
-    const groupId = id
-    const botNumber = conn.user.jid.split(':')[0] + '@s.whatsapp.net'
-    
-    if (action === 'add') {
-      if (!isWelcomeEnabled(groupId)) return
-      
-      for (let user of participants) {
-        if (user.includes(botNumber)) continue
-        
-        try {
-          let groupMetadata = await conn.groupMetadata(groupId)
-          let groupName = groupMetadata.subject
-          let groupDesc = groupMetadata.desc || '𝙎𝙞𝙣 𝙙𝙚𝙨𝙘𝙧𝙞𝙥𝙘𝙞𝙤́𝙣'
-          let memberCount = groupMetadata.participants.length
-          let userName = await conn.getName(user)
-          let groupPic
-          
-          try {
-            groupPic = await conn.profilePictureUrl(groupId, 'image')
-          } catch {
-            groupPic = 'https://files.catbox.moe/jg0te7.jpeg'
-          }
-          
-          let welcomeText = `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-☄️ 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 - 𝘽𝙄𝙀𝙉𝙑𝙀𝙉𝙄𝘿𝘼 ☄️
-▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-
-✨ 𝙉𝙤𝙢𝙗𝙧𝙚: ${userName}
-👥 𝙂𝙧𝙪𝙥𝙤: ${groupName}
-📊 𝙈𝙞𝙚𝙢𝙗𝙧𝙤𝙨: ${memberCount}
-
-📝 𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙘𝙞𝙤́𝙣:
-${groupDesc}
-
-▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-☄️ 𝘼𝙡𝙮𝙖 𝙎𝙪𝙗 ☄️
-▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰`
-
-          await conn.sendMessage(groupId, {
-            image: { url: groupPic },
-            caption: welcomeText,
-            mentions: [user]
-          })
-          
-        } catch (err) {
-          console.error('Error en bienvenida:', err)
-        }
-      }
-    }
-    
-    if (action === 'remove') {
-      if (!isGoodbyeEnabled(groupId)) return
-      
-      for (let user of participants) {
-        if (user.includes(botNumber)) continue
-        
-        try {
-          let groupMetadata = await conn.groupMetadata(groupId)
-          let groupName = groupMetadata.subject
-          let memberCount = groupMetadata.participants.length
-          let userName = await conn.getName(user)
-          let groupPic
-          
-          try {
-            groupPic = await conn.profilePictureUrl(groupId, 'image')
-          } catch {
-            groupPic = 'https://files.catbox.moe/jg0te7.jpeg'
-          }
-          
-          let goodbyeText = `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-☄️ 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 - 𝙃𝘼𝙎𝙏𝘼 𝙇𝙐𝙀𝙂𝙊 ☄️
-▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-
-👋 𝙉𝙤𝙢𝙗𝙧𝙚: ${userName}
-👥 𝙂𝙧𝙪𝙥𝙤: ${groupName}
-📊 𝙈𝙞𝙚𝙢𝙗𝙧𝙤𝙨 𝙧𝙚𝙨𝙩𝙖𝙣𝙩𝙚𝙨: ${memberCount}
-
-▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-☄️ 𝘼𝙡𝙮𝙖 𝙎𝙪𝙗 ☄️
-▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰`
-
-          await conn.sendMessage(groupId, {
-            image: { url: groupPic },
-            caption: goodbyeText,
-            mentions: [user]
-          })
-          
-        } catch (err) {
-          console.error('Error en despedida:', err)
-        }
-      }
-    }
-  } catch (err) {
-    console.error('Error en evento group-participants-update:', err)
-  }
-})
 
 process.on('uncaughtException', (err) => {
   console.error(chalk.red('💥 [ALYA SUB] Error no capturado:'), err);
@@ -693,6 +677,6 @@ watch(pluginFolder, global.reload);
 await global.reloadHandler();
 
 console.log(chalk.bold.magenta('\n' + '▰'.repeat(30)));
-console.log(chalk.bold.yellow('   🌊 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 - 𝙇𝙄𝙎𝙏𝘼 𝙋𝘼𝙍𝘼 𝙏𝙍𝘼𝘽𝘼𝙅𝘼𝙍 🌊'));
-console.log(chalk.bold.cyan('   「 𝙋𝙤𝙩𝙚𝙣𝙘𝙞𝙖 𝙚𝙣 𝙘𝙖𝙙𝙖 𝙢𝙚𝙣𝙨𝙖𝙟𝙚 」'));
+console.log(chalk.bold.yellow('   🌊 ALYA SUB - LISTA PARA TRABAJAR 🌊'));
+console.log(chalk.bold.cyan('   「 Potencia en cada mensaje 」'));
 console.log(chalk.bold.magenta('▰'.repeat(30) + '\n'));
