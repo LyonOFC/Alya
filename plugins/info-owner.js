@@ -1,13 +1,12 @@
 let handler = async (m, { conn }) => {
   let nomor = '59177474230'
   let nombre = 'Lyonn'
-  let rol = 'Creador'
   
   let vcard = `BEGIN:VCARD
 VERSION:3.0
 FN:${nombre}
 ORG:Alya Sub
-TITLE:${rol}
+TITLE:Creador
 TEL;waid=${nomor}:${nomor}
 END:VCARD`
 
@@ -22,16 +21,15 @@ END:VCARD`
 ㅤ    ⿻ ㅤ ✿ ㅤ σωηєя 木 ¢αя∂ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ *🎭 ℓүσηη*
-> ₊· ⫏⫏ ㅤ *Rol:* ${rol}
+> ₊· ⫏⫏ ㅤ *Rol:* Creador
 
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
-> ₊· ⫏⫏ ㅤ 🔖 Creado por ${nombre}
   `.trim()
   
   await conn.sendMessage(m.chat, {
     image: { url: fotoPerfil },
     caption: caption,
-    contacts: { displayName: nombre, vcard },
+    contact: vcard,
     contextInfo: {
       forwardingScore: 999,
       isForwarded: true,
