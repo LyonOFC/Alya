@@ -39,8 +39,9 @@ let handler = async (m, { conn, isAdmin, isOwner, isROwner, isBotAdmin, text }) 
 ㅤ    ꒰  ㅤ 📝 ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ υѕσ 木 cσrrєctσ ㅤ 性
 
-> ₊· ⫏⫏ ㅤ *Usa:* #kick @usuario
-> ₊· ⫏⫏ ㅤ *Usa:* Responde al mensaje
+> ₊· ⫏⫏ ㅤ *Usa 1:* Responde al mensaje
+> ₊· ⫏⫏ ㅤ *Usa 2:* #kick @usuario
+> ₊· ⫏⫏ ㅤ *Usa 3:* #kick +59177474230
 `.trim())
 
   const detectwhat = user.includes('@lid') ? '@lid' : '@s.whatsapp.net'
@@ -48,7 +49,7 @@ let handler = async (m, { conn, isAdmin, isOwner, isROwner, isBotAdmin, text }) 
   const isOwnerTarget = isROwnerTarget || user === conn.user.jid
 
   if (isOwnerTarget) return m.reply(`
-ㅤ    ꒰  ㅤ ☄️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ꒰  ㅤ 🛡️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ ησ 木 ρυє∂єѕ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ Nσ ρυє∂єѕ єχρυℓѕαя αℓ ¢яєα∂σя
@@ -63,8 +64,10 @@ let handler = async (m, { conn, isAdmin, isOwner, isROwner, isBotAdmin, text }) 
 ㅤ    ꒰  ㅤ ☄️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ єχρυℓѕα∂σ 木 🚫 ㅤ 性
 
-> ₊· ⫏⫏ ㅤ *Usuari@:* ${nombre}
-> ₊· ⫏⫏ ㅤ *Accion:* Expulsad@
+> ₊· ⫏⫏ ㅤ *Usuario:* ${nombre}
+> ₊· ⫏⫏ ㅤ *Accion:* Expulsado
+
+ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
       `.trim(),
       mentions: [user],
       contextInfo: {
