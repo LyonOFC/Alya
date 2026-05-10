@@ -128,7 +128,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
   }
 }
 
-handler.help = ['menu', 'menú', 'help', 'ayuda']
+handler.help = ['menu']
 handler.tags = ['main']
 handler.command = ['menu', 'menú', 'help', 'ayuda']
 handler.register = false
