@@ -1,6 +1,7 @@
 import fs from 'fs'
 import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
+import fetch from 'node-fetch'
 
 const tags = {
   main: 'ρяιη¢ιραℓ',
@@ -122,11 +123,18 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       }
     }, { quoted: m })
 
-    await conn.sendMessage(m.chat, {
-      audio: { url: audioURL },
-      mimetype: 'audio/mpeg',
-      ptt: true
-    }, { quoted: m })
+    try {
+      let res = await fetch(audioURL)
+      let audioBuffer = await res.buffer()
+      
+      await conn.sendMessage(m.chat, {
+        audio: audioBuffer,
+        mimetype: 'audio/mpeg',
+        ptt: true
+      }, { quoted: m })
+    } catch (e) {
+      console.error('Error al enviar el audio:', e)
+    }
 
     await m.react('🕸️')
 
