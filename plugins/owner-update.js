@@ -52,7 +52,7 @@ const keywords = ['update', 'up', 'fix']
 handler.help = ['update']
 handler.tags = ['owner']
 handler.command = ['update', 'up', 'fix']
-handler.desc = '> Actualiza la bot'
+handler.desc = 'Actualiza la bot'
 handler.rowner = true
 
 handler.all = async function (m) {
