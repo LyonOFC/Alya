@@ -2,7 +2,7 @@ let handler = async (m, { conn }) => {
   let nomor = '59177474230'
   let nombre = 'Lyonn'
   
-  let bio = (await conn.fetchStatus(nomor + '@s.whatsapp.net').catch(_ => {}))?.status || '☄️ Creador de Alya Sub'
+  let bio = (await conn.fetchStatus(nomor + '@s.whatsapp.net').catch(_ => {}))?.status || '"N"❤️‍🩹✨"NO LO PUDE EVITAR,ME ENAMORE DE TÍ...'
   
   let fotoPerfil = 'https://files.catbox.moe/jg0te7.jpeg'
   try {
