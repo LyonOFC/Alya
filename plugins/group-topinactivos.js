@@ -2,11 +2,13 @@ let handler = async (m, { conn }) => {
   let isGroup = m.chat.endsWith('@g.us')
 
   if (!isGroup) return m.reply(`
-ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 ɢяυρσ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ Sσℓσ єη gяυρσѕ
-`.trim())
+
+ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏ ꒱
+  `.trim())
 
   await m.react('📊')
 
@@ -49,14 +51,14 @@ let handler = async (m, { conn }) => {
     }
     
     let caption = `
-ㅤ    ꒰  ㅤ 📊 ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ꒰  ㅤ 📊 ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ тσρ 木 ιηα¢тινσѕ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ *Top 5 inactivos:*
 
 ${mensajes}
 
-ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
+ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏ ꒱
     `.trim()
 
     let mentions = topInactivos.map(v => v.id)
@@ -80,10 +82,12 @@ ${mensajes}
   } catch (error) {
     console.error(error)
     await m.reply(`
-ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 тσρ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ *Error:* ${error.message}
+
+ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏ ꒱
     `.trim())
     await m.react('❌')
   }
