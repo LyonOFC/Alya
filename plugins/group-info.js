@@ -11,33 +11,46 @@ let handler = async (m, { conn }) => {
   let grupo = await conn.groupMetadata(m.chat)
   let participantes = grupo.participants
   let admins = participantes.filter(v => v.admin === 'admin' || v.admin === 'superadmin').map(v => v.id)
-  let owner = grupo.owner || 'No disponible'
+  let ownerGroup = grupo.owner || (admins.length > 0 ? admins[0] : null)
   let fechaCreacion = grupo.creation ? new Date(grupo.creation * 1000).toLocaleDateString() : 'No disponible'
   let descripcion = grupo.desc || 'Sin descripcion'
   let memberCount = participantes.length
   let adminCount = admins.length
-
   let nombreGrupo = grupo.subject
-  let idGrupo = m.chat
+
+  let mentions = []
+  let ownerMention = ''
+  let adminsMention = ''
+
+  if (ownerGroup && ownerGroup !== 'No disponible') {
+    mentions.push(ownerGroup)
+    ownerMention = `@${ownerGroup.split('@')[0]}`
+  } else {
+    ownerMention = 'No disponible'
+  }
+
+  for (let admin of admins) {
+    mentions.push(admin)
+    adminsMention += `✦ @${admin.split('@')[0]}\n`
+  }
 
   let texto = `
 ㅤ    ꒰  ㅤ 📊 ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ ιηƒσ 木 gяυρσ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ *Nombre:* ${nombreGrupo}
-> ₊· ⫏⫏ ㅤ *ID:* ${idGrupo}
+> ₊· ⫏⫏ ㅤ *ID:* ${m.chat}
 > ₊· ⫏⫏ ㅤ *Creado:* ${fechaCreacion}
-> ₊· ⫏⫏ ㅤ *Dueño:* @${owner.split('@')[0]}
+> ₊· ⫏⫏ ㅤ *Dueño:* ${ownerMention}
 > ₊· ⫏⫏ ㅤ *Miembros:* ${memberCount}
 > ₊· ⫏⫏ ㅤ *Admins:* ${adminCount}
 
+${adminsMention ? '> ₊· ⫏⫏ ㅤ *Lista Admins:*\n' + adminsMention : ''}
 > ₊· ⫏⫏ ㅤ *Descripcion:*
 > ₊· ⫏⫏ ㅤ ${descripcion}
 
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
   `.trim()
-
-  let mentions = [owner, ...admins]
 
   await conn.sendMessage(m.chat, {
     text: texto,
