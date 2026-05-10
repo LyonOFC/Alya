@@ -16,7 +16,7 @@ let handler = async (m, { conn }) => {
 
 > ₊· ⫏⫏ ㅤ *🎭 ℓүσηη*
 > ₊· ⫏⫏ ㅤ *Rol:* Creador
-> ₊· ⫏⫏ ㅤ *Bio:* ${bio}
+> ₊· ⫏⫏ ㅤ *Info:* ${bio}
 > ₊· ⫏⫏ ㅤ *Contacto:* wa.me/${nomor}
 
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
