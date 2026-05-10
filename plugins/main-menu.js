@@ -3,39 +3,35 @@ import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
 
 const tags = {
-  owner: '𝙊𝙒𝙉𝙀𝙍',
-  rpg: '𝙍𝙋𝙂',
-  group: '𝙂𝙍𝙐𝙋𝙊𝙎',
-  serbot: '𝙎𝙀𝙍𝘽𝙊𝙏'
+  owner: 'σωηєя',
+  rpg: 'яρg',
+  group: 'ɢяυρσѕ',
+  serbot: 'ѕєявσт'
 }
 
 const defaultMenu = {
   before: `
-╭━━━━━━━━━━━━━━━╮
-┃  🌊 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 🌊
-┃  𝙑𝙚𝙧𝙨𝙞𝙤𝙣 1.0.0
-┃  𝙐𝙨𝙪𝙖𝙧𝙞𝙤: %name
-╰━━━━━━━━━━━━━━━╯
+ㅤ    ꒰  ㅤ 🕸️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ ιηƒσ 木 αтт ㅤ 性
+
+> ₊· нσℓα *.* вιєηνєηι∂σ αℓ мєηυ ∂є *αℓуα ѕυв*
+> ₊· υѕυαяισ: %name
+> ₊· ηινєℓ: %level
+> ₊· єχρ: %exp / %maxexp
+> ₊· υѕυαяισѕ: %totalreg
 
 %readmore
-
-𝘾𝙊𝙈𝘼𝙉𝘿𝙊𝙎 𝘿𝙄𝙎𝙋𝙊𝙉𝙄𝘽𝙇𝙀𝙎
-
 `,
-  header: '\n▸ %category ◂\n',
-  body: '   ✦ %cmd\n      → %desc',
+  header: '\nㅤ    ꒰  ㅤ ✿ ㅤ *%category* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ 性 ㅤ ѕє¢¢ιση ㅤ ✿',
+  body: '> ₊· ⫏⫏ ㅤ %cmd\n> ₊· → %desc',
   footer: '',
   after: `
-
-𝙄𝙉𝙁𝙊𝙍𝙈𝘼𝘾𝙄𝙊́𝙉
-
-   ✦ 𝙏𝙞𝙚𝙢𝙥𝙤 𝙖𝙘𝙩𝙞𝙫𝙤: %muptime
-   ✦ 𝙐𝙨𝙪𝙖𝙧𝙞𝙤𝙨: %totalreg
-
-╭━━━━━━━━━━━━━━━╮
-┃𝘾𝙍𝙀𝘼𝘿𝙊 𝙋𝙊𝙍 𝙇𝙔𝙊𝙉𝙉
-┃  𝘼𝙡𝙮𝙖 𝙎𝙪𝙗 ☄️ 
-╰━━━━━━━━━━━━━━━╯
+ㅤ
+ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ 性 ㅤ ѕιѕтємα єנє¢υтα∂σ ㅤ ✿
+ㅤ
+ㅤ    ꒰  ㅤ 🕸️ ㅤ *ℓүσηη* ㅤ ⫏⫏  ꒱
+> ₊· ⫏⫏ ㅤ ✿ 木 性 ㅤ αℓуα
 `
 }
 
@@ -51,7 +47,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         help: Array.isArray(p.help) ? p.help : [p.help],
         tags: Array.isArray(p.tags) ? p.tags : [p.tags],
         prefix: 'customPrefix' in p,
-        desc: p.desc || '𝙎𝙞𝙣 𝙙𝙚𝙨𝙘𝙧𝙞𝙥𝙘𝙞𝙤́𝙣'
+        desc: p.desc || 'ѕιη ∂єѕ¢яιρ¢ιση'
       }))
 
     let bannerFinal = 'https://files.catbox.moe/jg0te7.jpeg'
@@ -81,7 +77,6 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       exp: exp - min,
       maxexp: xp,
       totalreg: Object.keys(global.db.data.users).length,
-      muptime: clockString(process.uptime() * 1000),
       readmore: readMore,
     }
 
@@ -96,7 +91,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
           newsletterJid: "120363407253203904@newsletter",
-          newsletterName: "𝘼𝙡𝙮𝙖 𝘾𝙝𝙖𝙣𝙚𝙡",
+          newsletterName: "αℓуα - ¢нαηηєℓ",
           serverMessageId: 1
         }
       }
@@ -119,10 +114,3 @@ export default handler
 
 const more = String.fromCharCode(8206)
 const readMore = more.repeat(4001)
-
-function clockString(ms) {
-  let h = Math.floor(ms / 3600000)
-  let m = Math.floor(ms / 60000) % 60
-  let s = Math.floor(ms / 1000) % 60
-  return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':')
-}
