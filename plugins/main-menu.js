@@ -4,11 +4,10 @@ import { xpRange } from '../lib/levelling.js'
 
 const tags = {
   main: 'ρяιη¢ιραℓ',
-  owner: 'σωηєя',
   group: 'ɢяυρσѕ',
+  economy: 'є¢σησму',
   serbot: 'ѕєявσт',
-  sticker: 'ѕтι¢кєяѕ',
-  info: 'ιηƒσ'
+  owner: 'σωηєя'
 }
 
 const defaultMenu = {
@@ -19,6 +18,7 @@ const defaultMenu = {
 > ₊· нσℓα *.* вιєηνєηι∂σ αℓ мєηυ ∂є *αℓуα ѕυв*
 > ₊· υѕυαяισ: %name
 > ₊· ηινєℓ: %level
+> ₊· єχρ: %exp / %maxexp
 > ₊· υѕυαяισѕ: %totalreg
 
 %readmore
@@ -75,6 +75,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       }))
 
     let bannerFinal = 'https://files.catbox.moe/jg0te7.jpeg'
+    let audioURL = 'https://files.catbox.moe/i427hk.mp3'
 
     const textoMenu = [
       defaultMenu.before,
@@ -121,6 +122,12 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       }
     }, { quoted: m })
 
+    await conn.sendMessage(m.chat, {
+      audio: { url: audioURL },
+      mimetype: 'audio/mpeg',
+      ptt: true
+    }, { quoted: m })
+
     await m.react('🕸️')
 
   } catch (e) {
@@ -129,7 +136,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
   }
 }
 
-handler.help = ['menu']
+handler.help = ['menu', 'menú', 'help', 'ayuda']
 handler.tags = ['main']
 handler.command = ['menu', 'menú', 'help', 'ayuda']
 handler.register = false
