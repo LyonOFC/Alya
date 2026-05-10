@@ -2,28 +2,29 @@ import { execSync } from 'child_process'
 
 let handler = async (m, { conn, args, isOwner }) => {
   if (!isOwner) {
-    return conn.reply(m.chat, '❌ 𝙎𝙤𝙡𝙤 𝙚𝙡 𝙙𝙪𝙚𝙣̃𝙤 𝙥𝙪𝙚𝙙𝙚 𝙪𝙨𝙖𝙧 𝙚𝙨𝙩𝙤', m)
+    return conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ѕσℓσ єℓ ∂υєñσ ρυє∂є υѕαя єѕтσ', m)
   }
 
   const imagenURL = 'https://files.catbox.moe/jg0te7.jpeg'
 
   try {
-    await conn.reply(m.chat, '⏳ 𝘼𝙘𝙩𝙪𝙖𝙡𝙞𝙯𝙖𝙣𝙙𝙤 𝘼𝙡𝙮𝙖 𝙎𝙪𝙗... 𝙋𝙤𝙧 𝙛𝙖𝙫𝙤𝙧 𝙚𝙨𝙥𝙚𝙧𝙖', m)
+    await conn.reply(m.chat, 'ㅤ    ꒰  ㅤ ⏳ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱\nㅤ    ⿻ ㅤ ✿ ㅤ α¢тυαℓιzαη∂σ 木 性 ㅤ ✿\n\n> ₊· ⫏⫏ ㅤ ρσя ƒανσя єѕρєяα...', m)
 
     const output = execSync('git pull' + (args.length ? ' ' + args.join(' ') : '')).toString()
     const isUpdated = output.includes('Already up to date')
 
     let texto = `
-  ☄️ 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽
+ㅤ    ꒰  ㅤ 🕸️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ α¢тυαℓιzα¢ισ́η 木 性 ㅤ ✿
 
-  𝘼𝘾𝙏𝙐𝘼𝙇𝙄𝙕𝘼𝘾𝙄𝙊́𝙉
+> ₊· ⫏⫏ ㅤ єѕтα∂σ: ${isUpdated ? '✅ уα єѕтαвα α¢тυαℓιzα∂α' : '✅ α¢тυαℓιzα¢ιση αρℓι¢α∂α'}
+${isUpdated ? '' : '\n> ₊· ⫏⫏ ㅤ ¢αмвισѕ:\n> ₊· ' + output.slice(0, 300)}
 
-${isUpdated ? '✅ 𝙔𝙖 𝙚𝙨𝙩𝙖𝙗𝙖 𝙖𝙘𝙩𝙪𝙖𝙡𝙞𝙯𝙖𝙙𝙖' : '✅ 𝘼𝙘𝙩𝙪𝙖𝙡𝙞𝙯𝙖𝙘𝙞𝙤́𝙣 𝙖𝙥𝙡𝙞𝙘𝙖𝙙𝙖'}
+ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ 性 ㅤ ѕιѕтємα єנє¢υтα∂σ ㅤ ✿
 
-${isUpdated ? '' : '📦 𝘾𝙖𝙢𝙗𝙞𝙤𝙨:\n' + output.slice(0, 300)}
-
-  ✦ 𝘾𝙧𝙚𝙖𝙙𝙤 𝙥𝙤𝙧 𝙇𝙮𝙤𝙣𝙣
-  𝘼𝙡𝙮𝙖 𝙎𝙪𝙗
+ㅤ    ꒰  ㅤ 🕸️ ㅤ *ℓүσηη* ㅤ ⫏⫏  ꒱
+> ₊· ⫏⫏ ㅤ ✿ 木 性 ㅤ αℓуα
 `.trim()
 
     await conn.sendMessage(m.chat, {
@@ -34,14 +35,14 @@ ${isUpdated ? '' : '📦 𝘾𝙖𝙢𝙗𝙞𝙤𝙨:\n' + output.slice(0, 300)
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
           newsletterJid: "120363407253203904@newsletter",
-          newsletterName: "𝘼𝙡𝙮𝙖 𝘾𝙝𝙖𝙣𝙚𝙡",
+          newsletterName: "αℓуα - ¢нαηηєℓ",
           serverMessageId: 1
         }
       }
     }, { quoted: m })
 
   } catch (error) {
-    let conflictMsg = '❌ 𝙀𝙧𝙧𝙤𝙧 𝙖𝙡 𝙖𝙘𝙩𝙪𝙖𝙡𝙞𝙯𝙖𝙧'
+    let conflictMsg = '❌ єяяσя αℓ α¢тυαℓιzαя'
 
     try {
       const status = execSync('git status --porcelain').toString().trim()
@@ -61,7 +62,7 @@ ${isUpdated ? '' : '📦 𝘾𝙖𝙢𝙗𝙞𝙤𝙨:\n' + output.slice(0, 300)
           )
 
         if (conflictedFiles.length > 0) {
-          conflictMsg = `⚠️ 𝘾𝙤𝙣𝙛𝙡𝙞𝙘𝙩𝙤𝙨 𝙚𝙣:\n\n${conflictedFiles.map(f => `✦ ${f}`).join('\n')}\n\n🔧 𝙍𝙚𝙞𝙣𝙨𝙩𝙖𝙡𝙖 𝙤 𝙧𝙚𝙨𝙪𝙚𝙡𝙫𝙚 𝙢𝙖𝙣𝙪𝙖𝙡𝙢𝙚𝙣𝙩𝙚`
+          conflictMsg = `⚠️ ¢σηƒℓι¢тσѕ єη:\n\n${conflictedFiles.map(f => `> ₊· ${f}`).join('\n')}\n\n> ₊· яєιηѕтαℓα σ яєѕυєℓνє мαηυαℓмєηтє`
         }
       }
     } catch (statusError) {
@@ -69,14 +70,16 @@ ${isUpdated ? '' : '📦 𝘾𝙖𝙢𝙗𝙞𝙤𝙨:\n' + output.slice(0, 300)
     }
 
     let textoError = `
-  ☄️ 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ єяяσя 木 性 ㅤ ✿
 
-  𝙀𝙍𝙍𝙊𝙍
+> ₊· ⫏⫏ ㅤ ${conflictMsg}
 
-${conflictMsg}
+ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ 性 ㅤ ѕιѕтємα єנє¢υтα∂σ ㅤ ✿
 
-  ✦ 𝘾𝙧𝙚𝙖𝙙𝙤 𝙥𝙤𝙧 𝙇𝙮𝙤𝙣𝙣
-  𝘼𝙡𝙮𝙖 𝙎𝙪𝙗
+ㅤ    ꒰  ㅤ 🕸️ ㅤ *ℓүσηη* ㅤ ⫏⫏  ꒱
+> ₊· ⫏⫏ ㅤ ✿ 木 性 ㅤ αℓуα
 `.trim()
 
     await conn.sendMessage(m.chat, {
@@ -87,7 +90,7 @@ ${conflictMsg}
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
           newsletterJid: "120363407253203904@newsletter",
-          newsletterName: "𝘼𝙡𝙮𝙖 𝘾𝙝𝙖𝙣𝙚𝙡",
+          newsletterName: "αℓуα - ¢нαηηєℓ",
           serverMessageId: 1
         }
       }
@@ -100,7 +103,7 @@ const keywords = ['update', 'up', 'fix']
 handler.help = ['update']
 handler.tags = ['owner']
 handler.command = ['update', 'up', 'fix']
-handler.desc = '𝘼𝙘𝙩𝙪𝙖𝙡𝙞𝙯𝙖𝙧 𝘼𝙡𝙮𝙖 𝙎𝙪𝙗 𝙙𝙚𝙨𝙙𝙚 𝙂𝙞𝙩𝙃𝙪𝙗'
+handler.desc = 'ᴀᴄᴛᴜᴀʟɪᴢᴀʀ ᴀʟʏᴀ sᴜʙ'
 handler.owner = true
 
 handler.all = async function (m) {
