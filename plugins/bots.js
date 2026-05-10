@@ -1,38 +1,34 @@
-let handler = async (m, { conn, isOwner }) => {
-  if (!isOwner) {
-    return conn.reply(m.chat, '❌ 𝙎𝙤𝙡𝙤 𝙚𝙡 𝙙𝙪𝙚𝙣̃𝙤 𝙥𝙪𝙚𝙙𝙚 𝙪𝙨𝙖𝙧 𝙚𝙨𝙩𝙤', m)
-  }
-
+let handler = async (m, { conn }) => {
   const imagenURL = 'https://files.catbox.moe/jg0te7.jpeg'
-  
+
   let subBotsList = ''
   let totalSubBots = 0
-  
+
   if (global.conns && global.conns.length > 0) {
     totalSubBots = global.conns.length
     subBotsList = global.conns.map((bot, i) => {
-      let status = bot.user ? '✅ 𝘾𝙤𝙣𝙚𝙘𝙩𝙖𝙙𝙤' : '❌ 𝘿𝙚𝙨𝙘𝙤𝙣𝙚𝙘𝙩𝙖𝙙𝙤'
-      let nombre = bot.user?.name || '𝙎𝙞𝙣 𝙣𝙤𝙢𝙗𝙧𝙚'
-      let numero = bot.user?.id?.split(':')[0] || '𝘿𝙚𝙨𝙘𝙤𝙣𝙤𝙘𝙞𝙙𝙤'
-      return `✦ 𝘽𝙤𝙩 ${i + 1}\n   ➥ 𝙉𝙤𝙢𝙗𝙧𝙚: ${nombre}\n   ➥ 𝙉𝙪𝙢𝙚𝙧𝙤: ${numero}\n   ➥ 𝙀𝙨𝙩𝙖𝙙𝙤: ${status}`
+      let status = bot.user ? '✅ ¢σηє¢тα∂σ' : '❌ ∂єѕ¢σηє¢тα∂σ'
+      let nombre = bot.user?.name || 'ѕιη ησмвяє'
+      let numero = bot.user?.id?.split(':')[0] || '∂єѕ¢σησ¢ι∂σ'
+      return `✦ вσт ${i + 1}\n   ➥ ησмвяє: ${nombre}\n   ➥ ηυмєяσ: ${numero}\n   ➥ єѕтα∂σ: ${status}`
     }).join('\n\n')
   } else {
-    subBotsList = '✦ 𝙉𝙤 𝙝𝙖𝙮 𝙨𝙪𝙗-𝙗𝙤𝙩𝙨 𝙫𝙞𝙣𝙘𝙪𝙡𝙖𝙙𝙤𝙨'
+    subBotsList = '✦ ησ нαу ѕυв-вσтѕ νιη¢υℓα∂σѕ'
   }
 
   const texto = `
+ㅤ    ꒰  ㅤ 🕸️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ ✿ ㅤ вσтѕ νιη¢υℓα∂σѕ 木 性 ㅤ ✿
 
-  ☄️ 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽
-
-  𝘽𝙊𝙏𝙎 𝙑𝙄𝙉𝘾𝙐𝙇𝘼𝘿𝙊𝙎
-
-  📊 𝙏𝙤𝙩𝙖𝙡: ${totalSubBots} 𝙨𝙪𝙗-𝙗𝙤𝙩(𝙨)
+> ₊· ⫏⫏ ㅤ тσтαℓ: ${totalSubBots} ѕυв-вσт(ѕ)
 
 ${subBotsList}
 
-  ✦ 𝘾𝙧𝙚𝙖𝙙𝙤 𝙥𝙤𝙧 𝙇𝙮𝙤𝙣𝙣
-  𝘼𝙡𝙮𝙖 𝙎𝙪𝙗
+ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ 性 ㅤ ѕιѕтємα єנє¢υтα∂σ ㅤ ✿
 
+ㅤ    ꒰  ㅤ 🕸️ ㅤ *ℓүσηη* ㅤ ⫏⫏  ꒱
+> ₊· ⫏⫏ ㅤ ✿ 木 性 ㅤ αℓуα
 `.trim()
 
   await conn.sendMessage(m.chat, {
@@ -43,7 +39,7 @@ ${subBotsList}
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: "120363407253203904@newsletter",
-        newsletterName: "𝘼𝙡𝙮𝙖 𝘾𝙝𝙖𝙣𝙚𝙡",
+        newsletterName: "αℓуα - ¢нαηηєℓ",
         serverMessageId: 1
       }
     }
@@ -51,9 +47,8 @@ ${subBotsList}
 }
 
 handler.help = ['bots']
-handler.tags = ['owner']
+handler.tags = ['serbot']
 handler.command = ['bots', 'subbots']
-handler.desc = '𝙑𝙚𝙧 𝙡𝙤𝙨 𝙗𝙤𝙩𝙨 𝙫𝙞𝙣𝙘𝙪𝙡𝙖𝙙𝙤𝙨'
-handler.owner = true
+handler.desc = 'ᴠᴇʀ ʟᴏꜱ ʙᴏᴛꜱ ᴠɪɴᴄᴜʟᴀᴅᴏꜱ'
 
 export default handler
