@@ -13,7 +13,7 @@ let handler = async (m, { conn, isGroup, isAdmin, args }) => {
     const goodbyeStatus = global.db.data.welcome[m.chat].goodbye ? '✅ 𝘼𝙘𝙩𝙞𝙫𝙖𝙙𝙖' : '❌ 𝘿𝙚𝙨𝙖𝙘𝙩𝙞𝙫𝙖𝙙𝙖'
     
     return conn.sendMessage(m.chat, { text: `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-🌊 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 - 𝘾𝙊𝙉𝙁𝙄𝙂𝙐𝙍𝘼𝘾𝙄𝙊́𝙉
+☄️ 𝘼𝙇𝙔𝘼 𝙎𝙐𝘽 - 𝘾𝙊𝙉𝙁𝙄𝙂𝙐𝙍𝘼𝘾𝙄𝙊́𝙉
 ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
 
 📌 𝘽𝙞𝙚𝙣𝙫𝙚𝙣𝙞𝙙𝙖: ${welcomeStatus}
@@ -26,7 +26,7 @@ let handler = async (m, { conn, isGroup, isAdmin, args }) => {
 ✦ ${usedPrefix}config goodbye on
 ✦ ${usedPrefix}config goodbye off
 ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-🌊 𝘼𝙡𝙮𝙖 𝙎𝙪𝙗 - 𝙋𝙤𝙩𝙚𝙣𝙘𝙞𝙖 𝙚𝙣 𝙘𝙖𝙙𝙖 𝙢𝙚𝙣𝙨𝙖𝙟𝙚
+☄️ 𝘼𝙡𝙮𝙖 𝙎𝙪𝙗 - 𝙋𝙤𝙩𝙚𝙣𝙘𝙞𝙖 𝙚𝙣 𝙘𝙖𝙙𝙖 𝙢𝙚𝙣𝙨𝙖𝙟𝙚
 ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` }, { quoted: m })
   }
 
