@@ -70,7 +70,7 @@ let handler = async (m, { conn, isAdmin, isOwner, isROwner, isBotAdmin, text }) 
 ㅤ    ⿻ ㅤ ✿ ㅤ ρяσмσтє 木 нє¢нσ ㅤ 性
 
 > ₊· ⫏⫏ ㅤ *Usuario:* ${nombre}
-> ₊· ⫏⫏ ㅤ *Accion:* 𝐀𝐇𝐎𝐑𝐀 𝐄𝐒 𝐀𝐃𝐌𝐈𝐍𝐈𝐒𝐓𝐑𝐀𝐃𝐎𝐑
+> ₊· ⫏⫏ ㅤ *Accion:* Ahora es administrador 
 
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
       `.trim(),
