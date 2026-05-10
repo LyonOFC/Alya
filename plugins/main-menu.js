@@ -1,15 +1,14 @@
 import fs from 'fs'
 import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
-import fetch from 'node-fetch'
-import path from 'path'
 
 const tags = {
   main: 'ρяιη¢ιραℓ',
+  owner: 'σωηєя',
   group: 'ɢяυρσѕ',
-  economy: 'є¢σησму',
   serbot: 'ѕєявσт',
-  owner: 'σωηєя'
+  sticker: 'ѕтι¢кєяѕ',
+  info: 'ιηƒσ'
 }
 
 const defaultMenu = {
@@ -20,7 +19,6 @@ const defaultMenu = {
 > ₊· нσℓα *.* вιєηνєηι∂σ αℓ мєηυ ∂є *αℓуα ѕυв*
 > ₊· υѕυαяισ: %name
 > ₊· ηινєℓ: %level
-> ₊· єχρ: %exp / %maxexp
 > ₊· υѕυαяισѕ: %totalreg
 
 %readmore
@@ -36,29 +34,6 @@ const defaultMenu = {
 ㅤ    ꒰  ㅤ 🕸️ ㅤ *ℓүσηη* ㅤ ⫏⫏  ꒱
 > ₊· ⫏⫏ ㅤ ✿ 木 性 ㅤ αℓуα
 `
-}
-
-// Función para descargar y guardar el audio localmente
-async function descargarAudio(url, rutaDestino) {
-  try {
-    const response = await fetch(url)
-    if (!response.ok) throw new Error(`Error al descargar: ${response.status}`)
-    const buffer = await response.buffer()
-    fs.writeFileSync(rutaDestino, buffer)
-    return true
-  } catch (error) {
-    console.error('Error al descargar audio:', error)
-    return false
-  }
-}
-
-// Ruta donde se guardará el audio localmente
-const audioPath = path.join(process.cwd(), 'tmp', 'menu_audio.mp3')
-
-// Verificar si el audio ya existe, si no, descargarlo
-if (!fs.existsSync(audioPath)) {
-  console.log('Descargando audio del menú...')
-  await descargarAudio('https://files.catbox.moe/i427hk.mp3', audioPath)
 }
 
 const handler = async (m, { conn, usedPrefix: _p }) => {
@@ -146,18 +121,6 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       }
     }, { quoted: m })
 
-    // Enviar el audio descargado localmente
-    if (fs.existsSync(audioPath)) {
-      const audioBuffer = fs.readFileSync(audioPath)
-      await conn.sendMessage(m.chat, {
-        audio: audioBuffer,
-        mimetype: 'audio/mpeg',
-        ptt: true
-      }, { quoted: m })
-    } else {
-      console.log('Archivo de audio no encontrado')
-    }
-
     await m.react('🕸️')
 
   } catch (e) {
@@ -166,7 +129,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
   }
 }
 
-handler.help = ['menu', 'menú', 'help', 'ayuda']
+handler.help = ['menu']
 handler.tags = ['main']
 handler.command = ['menu', 'menú', 'help', 'ayuda']
 handler.register = false
