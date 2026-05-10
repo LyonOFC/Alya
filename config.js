@@ -3,8 +3,8 @@ import chalk from 'chalk'
 import { fileURLToPath } from 'url'
 
 global.owner = [
-  ['5492644138998', '𝚆𝙸𝙻𝙺𝙴𝚁', true],
-  ['51907376960'],
+  ['59177474230', 'LyonnOFC', true],
+  ['59177474230'],
   ['156981591593126'],
   ['880077330554979']
 ]
