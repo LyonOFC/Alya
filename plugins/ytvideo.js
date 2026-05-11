@@ -1,8 +1,14 @@
 import fetch from 'node-fetch'
+import fs from 'fs'
+import path from 'path'
+import { exec } from 'child_process'
+import util from 'util'
 import {
   generateWAMessageFromContent,
   proto
 } from '@whiskeysockets/baileys'
+
+const execPromise = util.promisify(exec)
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text) return m.reply(`
@@ -97,6 +103,9 @@ handler.before = async (m, { conn }) => {
 
     await m.react('⏳')
 
+    const tmpDir = path.join(process.cwd(), 'tmp')
+    if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true })
+
     const parts = id.split('_')
     const urlBase64 = parts[2]
     const titleBase64 = parts[3]
@@ -107,13 +116,26 @@ handler.before = async (m, { conn }) => {
 
     const downloadUrl = `https://dvlyonn.onrender.com/download/ytvideo?url=${encodeURIComponent(videoUrl)}`
     const response = await fetch(downloadUrl)
-    const data = await response.json()
+    const json = await response.json()
 
-    if (!data.status || !data.result?.download_url) {
+    if (!json.status || !json.result?.download_url) {
       throw new Error('No se pudo obtener el video')
     }
 
-    const duracion = data.result.duration || 0
+    const video = json.result
+
+    const videoResponse = await fetch(video.download_url)
+    const videoBuffer = await videoResponse.buffer()
+    const inputPath = path.join(tmpDir, `input_${Date.now()}.mp4`)
+    const outputPath = path.join(tmpDir, `output_${Date.now()}.mp4`)
+
+    fs.writeFileSync(inputPath, videoBuffer)
+
+    await execPromise(`ffmpeg -i "${inputPath}" -c:v libx264 -c:a aac -movflags +faststart "${outputPath}"`)
+
+    const convertedBuffer = fs.readFileSync(outputPath)
+
+    const duracion = video.duration || 0
     const minutos = Math.floor(duracion / 60)
     const segundos = duracion % 60
     const duracionTexto = `${minutos}:${segundos.toString().padStart(2, '0')}`
@@ -122,16 +144,16 @@ handler.before = async (m, { conn }) => {
 ㅤ    ꒰  ㅤ 📹 ㅤ *αℓуα - νι∂єσ* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ єท αíяє 木 🎬 ㅤ 性
 
-> ₊· ⫏⫏ ㅤ *τíτυℓσ:* ${data.result.title || videoTitle}
+> ₊· ⫏⫏ ㅤ *τíτυℓσ:* ${video.title || videoTitle}
 > ₊· ⫏⫏ ㅤ *∂υяα¢ιón:* ${duracionTexto}
-> ₊· ⫏⫏ ㅤ *¢αℓι∂α∂:* ${data.result.quality || '360p'}
+> ₊· ⫏⫏ ㅤ *¢αℓι∂α∂:* ${video.quality || '360p'}
 
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - вσт* ㅤ ⫏⫏ ꒱
     `.trim()
 
-    if (data.result.thumbnail) {
+    if (video.thumbnail) {
       await conn.sendMessage(m.chat, {
-        image: { url: data.result.thumbnail },
+        image: { url: video.thumbnail },
         caption: caption
       }, { quoted: m })
     } else {
@@ -139,10 +161,13 @@ handler.before = async (m, { conn }) => {
     }
 
     await conn.sendMessage(m.chat, {
-      video: { url: data.result.download_url },
+      video: convertedBuffer,
       mimetype: 'video/mp4',
-      fileName: `${data.result.title || videoTitle}.mp4`
+      fileName: `${video.title || videoTitle}.mp4`
     }, { quoted: m })
+
+    fs.unlinkSync(inputPath)
+    fs.unlinkSync(outputPath)
 
     await m.react('✅')
     return true
@@ -155,7 +180,7 @@ handler.before = async (m, { conn }) => {
   }
 }
 
-handler.help = ['ytvideo']
+handler.help = ['video']
 handler.tags = ['downloader']
 handler.command = ['video', 'ytvideo', 'descargarvideo']
 
