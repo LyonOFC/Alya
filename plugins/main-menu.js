@@ -101,7 +101,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       }))
 
     let bannerFinal = 'https://files.catbox.moe/jg0te7.jpeg'
-    let audioURL = 'https://files.catbox.moe/65kqmi.mp3'
+    let audioURL = 'https://files.catbox.moe/i427hk.mp3'
 
     const textoMenu = [
       defaultMenu.before,
