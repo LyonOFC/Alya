@@ -11,13 +11,14 @@ const tags = {
   main: 'ρяιη¢ιραℓ',
   group: 'ɢяυρσѕ',
   economy: 'є¢σησму',
+  game: 'gαмє',
   serbot: 'ѕєявσт',
   owner: 'σωηєя'
 }
 
 const defaultMenu = {
   before: `
-ㅤ    ꒰ 🕸️ *αℓуα - ѕυв* ⫏⫏ ꒱
+ㅤ    ꒰ 🕸️ *αℓуα - вσт* ⫏⫏ ꒱
 ㅤ    ⿻ ✿ ιηƒσ 木 αтт 性
 
 > ₊· нσℓα *%name*
@@ -28,11 +29,11 @@ const defaultMenu = {
 %readmore
 `,
   header: '\nㅤ    ꒰ ✿ *%category* ⫏⫏ ꒱\n',
-  body: '> ⫏⫏ %cmd\n> → %desc',
+  body: '> ⫏⫏ %cmd',
   footer: '',
   after: `
 
-ㅤ    ꒰ ✿ *αℓуα - ѕυв* ⫏⫏ ꒱
+ㅤ    ꒰ ✿ *αℓуα - вσт* ⫏⫏ ꒱
 ㅤ    ⿻ 性 ѕιѕтємα єנє¢υтα∂σ ✿
 `
 }
@@ -78,7 +79,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       return await conn.sendMessage(m.chat, {
         image: { url: fotoPerfil },
         caption: `
-ㅤ    ꒰ ❌ *αℓуα - ѕυв* ⫏⫏ ꒱
+ㅤ    ꒰ ❌ *αℓуα - вσт* ⫏⫏ ꒱
 
 > Debes registrarte primero
 > Usa: ${_p}reg Lyonn.14
@@ -96,7 +97,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         help: Array.isArray(p.help) ? p.help : [p.help],
         tags: Array.isArray(p.tags) ? p.tags : [p.tags],
         prefix: 'customPrefix' in p,
-        desc: p.desc || 'ѕιη ∂єѕ¢яιρ¢ιση'
+        desc: ''
       }))
 
     let bannerFinal = 'https://cdn.dev-ander.xyz/file/xwrz29.jpg'
@@ -111,7 +112,6 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         .map(menu => menu.help.map(h =>
           defaultMenu.body
             .replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`)
-            .replace(/%desc/g, menu.desc)
         ).join('\n')).join('\n')
 
       if (cmds) {
@@ -161,7 +161,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
     const interactiveMessage = proto.Message.InteractiveMessage.create({
 
       header: {
-        title: 'αℓуα - ѕυв',
+        title: 'αℓуα - вσт',
         subtitle: 'Menú Principal',
         hasMediaAttachment: true,
         imageMessage: media.imageMessage
@@ -172,7 +172,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       },
 
       footer: {
-        text: '⫏⫏ αℓуα - ѕυв ✿'
+        text: '⫏⫏ αℓуα - вσт ✿'
       },
 
       nativeFlowMessage: {
@@ -241,7 +241,16 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       await conn.sendMessage(m.chat, {
         audio: audioBuffer,
         mimetype: 'audio/ogg; codecs=opus',
-        ptt: true
+        ptt: true,
+        contextInfo: {
+          forwardingScore: 999,
+          isForwarded: true,
+          forwardedNewsletterMessageInfo: {
+            newsletterJid: "120363407253203904@newsletter",
+            newsletterName: "αℓуα - ¢нαηηєℓ",
+            serverMessageId: 1
+          }
+        }
       }, {
         quoted: m
       })
