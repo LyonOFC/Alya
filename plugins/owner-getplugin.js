@@ -5,19 +5,33 @@ const handler = async (m, { conn, args, usedPrefix: _p }) => {
   const imagenURL = 'https://files.catbox.moe/jg0te7.jpeg'
 
   if (!args[0]) {
-    const lista = Object.keys(global.plugins)
-      .filter(name => global.plugins[name]?.help)
-      .map((name, i) => `✦ ${i + 1}. ${name}`)
-      .join('\n')
+    const categorias = {}
+
+    Object.entries(global.plugins)
+      .filter(([, p]) => !p.disabled && p.help && p.tags)
+      .forEach(([filename, p]) => {
+        const tags = Array.isArray(p.tags) ? p.tags : [p.tags]
+        const help = Array.isArray(p.help) ? p.help : [p.help]
+        const desc = p.desc || 'ѕιη ∂єѕ¢яιρ¢ιση'
+        const file = path.basename(filename)
+        tags.forEach(tag => {
+          if (!categorias[tag]) categorias[tag] = []
+          categorias[tag].push({ file, help, desc })
+        })
+      })
+
+    const lista = Object.entries(categorias).map(([tag, plugins]) => {
+      const cmds = plugins.map(p =>
+        `   ➥ 📄 *${p.file}*\n       ¢м∂: ${p.help.map(h => `${_p}${h}`).join(', ')}\n       ∂єѕ¢: ${p.desc}`
+      ).join('\n\n')
+      return `✦ *${tag}* (${plugins.length})\n\n${cmds}`
+    }).join('\n\n━━━━━━━━━━━━━━━\n\n')
 
     const texto = `
 ㅤ    ꒰  ㅤ 🕸️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ gєтρℓυgιη 木 ℓιѕтα ㅤ 性
 
 > ₊· ⫏⫏ ㅤ υѕσ: ${_p}getplugin <ησмвяє.נѕ>
-> ₊· ⫏⫏ ㅤ єנємρℓσ: ${_p}getplugin main-menu.js
-
-> ₊· ρℓυgιηѕ ∂ιѕρσηιвℓєѕ:
 
 ${lista}
 
@@ -26,7 +40,7 @@ ${lista}
 
 ㅤ    ꒰  ㅤ 🕸️ ㅤ *ℓүσηη* ㅤ ⫏⫏  ꒱
 > ₊· ⫏⫏ ㅤ ✿ 木 性 ㅤ αℓуα
-`.trim()
+    `.trim()
 
     return await conn.sendMessage(m.chat, {
       image: { url: imagenURL },
@@ -43,10 +57,8 @@ ${lista}
     }, { quoted: m })
   }
 
-  // Buscar el archivo del plugin
   const pluginName = args[0].endsWith('.js') ? args[0] : `${args[0]}.js`
-  
-  // Buscar en las rutas comunes de plugins
+
   const posiblesPaths = [
     path.join(process.cwd(), 'plugins', pluginName),
     path.join(process.cwd(), 'plugins', 'owner', pluginName),
@@ -88,8 +100,15 @@ ${lista}
     }, { quoted: m })
   }
 
-  // Leer y enviar el archivo
-  const codigo = fs.readFileSync(archivoPath, 'utf-8')
+  let codigo = fs.readFileSync(archivoPath, 'utf-8')
+
+  codigo = codigo
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/^\s*\/\/.*$/gm, '')
+    .replace(/\s*\/\/[^'"]*$/gm, '')
+    .replace(/^\s*[\r\n]/gm, '')
+    .trim()
+
   const buffer = Buffer.from(codigo, 'utf-8')
 
   await conn.sendMessage(m.chat, {
@@ -119,7 +138,6 @@ ${lista}
     }
   }, { quoted: m })
 
-  // Enviar el archivo .js
   await conn.sendMessage(m.chat, {
     document: buffer,
     mimetype: 'application/javascript',
