@@ -1,14 +1,19 @@
 import fs from 'fs'
 import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
+import fetch from 'node-fetch'
+import path from 'path'
+import { exec } from 'child_process'
+import util from 'util'
+
+const execPromise = util.promisify(exec)
 
 const tags = {
   main: 'ρяιη¢ιραℓ',
-  owner: 'σωηєя',
   group: 'ɢяυρσѕ',
+  economy: 'є¢σησму',
   serbot: 'ѕєявσт',
-  sticker: 'ѕтι¢кєяѕ',
-  info: 'ιηƒσ'
+  owner: 'σωηєя'
 }
 
 const defaultMenu = {
@@ -19,6 +24,7 @@ const defaultMenu = {
 > ₊· нσℓα *.* вιєηνєηι∂σ αℓ мєηυ ∂є *αℓуα ѕυв*
 > ₊· υѕυαяισ: %name
 > ₊· ηινєℓ: %level
+> ₊· єχρ: %exp / %maxexp
 > ₊· υѕυαяισѕ: %totalreg
 
 %readmore
@@ -36,17 +42,37 @@ const defaultMenu = {
 `
 }
 
+async function descargarYConvertirAudio(url, outputPath) {
+  const tmpDir = path.join(process.cwd(), 'tmp')
+
+  if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true })
+
+  const tempPath = path.join(tmpDir, `temp_${Date.now()}.mp3`)
+
+  const res = await fetch(url)
+  const buffer = await res.buffer()
+  fs.writeFileSync(tempPath, buffer)
+
+  await execPromise(
+    `ffmpeg -y -i "${tempPath}" -c:a libopus -b:a 24k -vbr on -compression_level 10 -f ogg "${outputPath}"`
+  )
+
+  fs.unlinkSync(tempPath)
+
+  return outputPath
+}
+
 const handler = async (m, { conn, usedPrefix: _p }) => {
   try {
     let user = global.db.data.users[m.sender]
-    
+
     if (!user.registered) {
       let fotoPerfil = 'https://files.catbox.moe/jg0te7.jpeg'
       try {
         let pp = await conn.profilePictureUrl(m.sender, 'image')
         if (pp) fotoPerfil = pp
       } catch (e) {}
-      
+
       return await conn.sendMessage(m.chat, {
         image: { url: fotoPerfil },
         caption: `
@@ -60,7 +86,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         `.trim()
       }, { quoted: m })
     }
-    
+
     const { exp, level } = global.db.data.users[m.sender]
     const { min, xp } = xpRange(level, global.multiplier)
     const name = await conn.getName(m.sender)
@@ -75,13 +101,14 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       }))
 
     let bannerFinal = 'https://files.catbox.moe/jg0te7.jpeg'
+    let audioURL = 'https://files.catbox.moe/65kqmi.mp3'
 
     const textoMenu = [
       defaultMenu.before,
       ...Object.keys(tags).map(tag => {
         const cmds = help
           .filter(menu => menu.tags?.includes(tag))
-          .map(menu => menu.help.map(h => 
+          .map(menu => menu.help.map(h =>
             defaultMenu.body
               .replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`)
               .replace(/%desc/g, menu.desc)
@@ -121,6 +148,22 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       }
     }, { quoted: m })
 
+    try {
+      const audioPath = path.join(process.cwd(), 'tmp', `menu_audio_${Date.now()}.ogg`)
+      await descargarYConvertirAudio(audioURL, audioPath)
+      const audioBuffer = fs.readFileSync(audioPath)
+
+      await conn.sendMessage(m.chat, {
+        audio: audioBuffer,
+        mimetype: 'audio/ogg; codecs=opus',
+        ptt: true
+      }, { quoted: m })
+
+      fs.unlinkSync(audioPath)
+    } catch (audioErr) {
+      console.error('Error con el audio:', audioErr)
+    }
+
     await m.react('🕸️')
 
   } catch (e) {
@@ -129,7 +172,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
   }
 }
 
-handler.help = ['menu']
+handler.help = ['menu', 'menú', 'help', 'ayuda']
 handler.tags = ['main']
 handler.command = ['menu', 'menú', 'help', 'ayuda']
 handler.register = false
