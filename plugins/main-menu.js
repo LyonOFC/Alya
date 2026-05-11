@@ -304,7 +304,7 @@ handler.before = async (m, { conn }) => {
   return false
 }
 
-handler.help = ['menu', 'menú', 'help']
+handler.help = ['menu']
 handler.tags = ['main']
 handler.command = ['menu', 'menú', 'help']
 handler.register = false
