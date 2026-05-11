@@ -130,6 +130,14 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
     await conn.sendMessage(m.chat, {
       image: { url: bannerFinal },
       caption: texto.trim(),
+      footer: '⫏⫏ αℓуα ѕυв ✿',
+      buttons: [
+        {
+          buttonId: `${_p}ping`,
+          buttonText: { displayText: '🏓 ριηg' },
+          type: 1
+        }
+      ],
       mentions: [m.sender],
       contextInfo: {
         forwardingScore: 999,
