@@ -1,6 +1,6 @@
 import os from 'os'
 
-const handler = async (m, { conn, usedPrefix: _p }) => {
+const handler = async (m, { conn }) => {
   try {
     const start = Date.now()
 
@@ -25,6 +25,9 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
 > ₊· ⚙️ ησ∂є: *${process.version}*
 
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ⿻ ㅤ 性 ㅤ ѕιѕтємα єנє¢υтα∂σ ㅤ ✿
+
+ㅤ    ꒰  ㅤ 🕸️ ㅤ *ℓүσηη* ㅤ ⫏⫏  ꒱
 > ₊· ⫏⫏ ㅤ ✿ 木 性 ㅤ αℓуα
     `.trim()
 
@@ -55,7 +58,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
 handler.help = ['ping']
 handler.tags = ['main']
 handler.command = ['ping', 'speed', 'velocidad']
-handler.register = false
+handler.desc = 'ᴠᴇʀ ʟᴀ ʟᴀᴛᴇɴᴄɪᴀ ʏ ᴇꜱᴛᴀᴅᴏ ᴅᴇʟ ʙᴏᴛ'
 
 export default handler
 
