@@ -127,7 +127,6 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
 
     const texto = textoMenu.replace(new RegExp(`%(${Object.keys(replace).join('|')})`, 'g'), (_, name) => String(replace[name]))
 
-    // ── Envío del menú con botón de ping ──
     await conn.sendMessage(m.chat, {
       image: { url: bannerFinal },
       caption: texto.trim(),
@@ -140,19 +139,9 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
           newsletterName: "αℓуα - ¢нαηηєℓ",
           serverMessageId: 1
         }
-      },
-      buttons: [
-        {
-          buttonId: `${_p}ping`,
-          buttonText: { displayText: '🏓 ριηg' },
-          type: 1
-        }
-      ],
-      headerType: 4,  // 4 = imagen
-      footer: '⫏⫏ αℓуα ѕυв ✿'
+      }
     }, { quoted: m })
 
-    // ── Audio ──
     try {
       const audioPath = path.join(process.cwd(), 'tmp', `menu_audio_${Date.now()}.ogg`)
       await descargarYConvertirAudio(audioURL, audioPath)
