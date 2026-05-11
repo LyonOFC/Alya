@@ -18,7 +18,7 @@ let handler = async (m, { conn, isAdmin, isOwner, text }) => {
   `.trim())
 
   let grupo = await conn.groupMetadata(m.chat)
-  let participantes = grupo.participants
+  let participantes = grupo.participants.filter(p => p.id.endsWith('@s.whatsapp.net'))
   let mensaje = text || '📢 *Atención* 📢'
 
   let listaMenciones = []
@@ -26,8 +26,9 @@ let handler = async (m, { conn, isAdmin, isOwner, text }) => {
 
   for (let i = 0; i < participantes.length; i++) {
     let user = participantes[i].id
+    let numero = user.split('@')[0]
     listaMenciones.push(user)
-    numeros += `> ${i + 1}. @${user.split('@')[0]}\n`
+    numeros += `> ${i + 1}. @${numero}\n`
   }
 
   let caption = `
@@ -38,7 +39,6 @@ let handler = async (m, { conn, isAdmin, isOwner, text }) => {
 > ₊· ⫏⫏ ㅤ *👥 Miembros:* ${participantes.length}
 
 ${numeros}
-
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - вσт* ㅤ ⫏⫏ ꒱
   `.trim()
 
