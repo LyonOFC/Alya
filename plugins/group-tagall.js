@@ -42,7 +42,20 @@ ${numeros}
 ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - вσт* ㅤ ⫏⫏ ꒱
   `.trim()
 
-  await conn.sendMessage(m.chat, { text: caption, mentions: listaMenciones }, { quoted: m })
+  await conn.sendMessage(m.chat, {
+    text: caption,
+    mentions: listaMenciones,
+    contextInfo: {
+      forwardingScore: 999,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: "120363407253203904@newsletter",
+        newsletterName: "αℓуα - ¢нαηηєℓ",
+        serverMessageId: 1
+      }
+    }
+  }, { quoted: m })
+
   await m.react('📢')
 }
 
