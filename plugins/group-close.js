@@ -3,9 +3,10 @@ const handler = async (m, { conn }) => {
 
   const groupMetadata = await conn.groupMetadata(m.chat)
   const participants = groupMetadata.participants
-  const botId = conn.user.jid
-  const botAdmin = participants.find(p => p.id === botId)?.admin
-  const senderAdmin = participants.find(p => p.id === m.sender)?.admin
+  const botId = conn.user.jid.split(':')[0] + '@s.whatsapp.net'
+  const senderId = m.sender.split(':')[0] + '@s.whatsapp.net'
+  const botAdmin = participants.find(p => p.id.split(':')[0] + '@s.whatsapp.net' === botId)?.admin
+  const senderAdmin = participants.find(p => p.id.split(':')[0] + '@s.whatsapp.net' === senderId)?.admin
 
   if (!senderAdmin) return m.reply('> ₊· ⫏⫏ ㅤ *ѕσℓσ α∂мιηѕ ρυє∂єη υѕαя єѕтє ¢σмαη∂σ*')
   if (!botAdmin) return m.reply('> ₊· ⫏⫏ ㅤ *єℓ вσт ηє¢єѕιтα ѕєя α∂мιη*')
