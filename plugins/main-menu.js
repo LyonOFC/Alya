@@ -18,10 +18,10 @@ const tags = {
 
 const defaultMenu = {
   before: `
-ㅤ    ꒰  ㅤ 🕸️ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ꒰  ㅤ 🕸️ ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ ιηƒσ 木 αтт ㅤ 性
 
-> ₊· нσℓα *.* вιєηνєηι∂σ αℓ мєηυ ∂є *αℓуα ѕυв*
+> ₊· нσℓα *.* вιєηνєηι∂σ αℓ мєηυ ∂є *αℓуα - ѕυв*
 > ₊· υѕυαяισ: %name
 > ₊· ηινєℓ: %level
 > ₊· єχρ: %exp / %maxexp
@@ -34,10 +34,10 @@ const defaultMenu = {
   footer: '',
   after: `
 ㅤ
-ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ 性 ㅤ ѕιѕтємα єנє¢υтα∂σ ㅤ ✿
 ㅤ
-ㅤ    ꒰  ㅤ 🕸️ ㅤ *ℓүσηη* ㅤ ⫏⫏  ꒱
+ㅤ    ꒰  ㅤ 🕸️ ㅤ *¢яєα∂σ ρσя ℓуσηη* ㅤ ⫏⫏  ꒱
 > ₊· ⫏⫏ ㅤ ✿ 木 性 ㅤ αℓуα
 `
 }
@@ -70,13 +70,13 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       return await conn.sendMessage(m.chat, {
         image: { url: fotoPerfil },
         caption: `
-ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏  ꒱
+ㅤ    ꒰  ㅤ ❌ ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏  ꒱
 ㅤ    ⿻ ㅤ ✿ ㅤ яєgιѕтяσ 木 ηє¢єѕαяισ ㅤ ✿
 
 > ₊· ⫏⫏ ㅤ *Debes registrarte primero*
 > ₊· ⫏⫏ ㅤ Usa: ${_p}reg Lyonn.14
 
-ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα ѕυв* ㅤ ⫏⫏ ꒱
+ㅤ    ꒰  ㅤ ✿ ㅤ *αℓуα - ѕυв* ㅤ ⫏⫏ ꒱
         `.trim()
       }, { quoted: m })
     }
@@ -97,24 +97,24 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
     let bannerFinal = 'https://files.catbox.moe/jg0te7.jpeg'
     let audioURL = 'https://files.catbox.moe/i427hk.mp3'
 
-    const textoMenu = [
-      defaultMenu.before,
-      ...Object.keys(tags).map(tag => {
-        const cmds = help
-          .filter(menu => menu.tags?.includes(tag))
-          .map(menu => menu.help.map(h =>
-            defaultMenu.body
-              .replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`)
-              .replace(/%desc/g, menu.desc)
-          ).join('\n')).join('\n')
-        return cmds ? [
-          defaultMenu.header.replace(/%category/g, tags[tag]),
-          cmds,
-          defaultMenu.footer
-        ].join('\n') : ''
-      }).filter(Boolean),
-      defaultMenu.after
-    ].join('\n')
+    let textoMenu = defaultMenu.before
+
+    for (let tag of Object.keys(tags)) {
+      const cmds = help
+        .filter(menu => menu.tags?.includes(tag))
+        .map(menu => menu.help.map(h =>
+          defaultMenu.body
+            .replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`)
+            .replace(/%desc/g, menu.desc)
+        ).join('\n')).join('\n')
+      if (cmds) {
+        textoMenu += defaultMenu.header.replace(/%category/g, tags[tag])
+        textoMenu += '\n' + cmds
+        textoMenu += '\n' + defaultMenu.footer
+      }
+    }
+
+    textoMenu += defaultMenu.after
 
     const replace = {
       name: name,
@@ -125,19 +125,14 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       readmore: readMore,
     }
 
-    const texto = textoMenu.replace(new RegExp(`%(${Object.keys(replace).join('|')})`, 'g'), (_, name) => String(replace[name]))
+    let texto = textoMenu
+    for (let key of Object.keys(replace)) {
+      texto = texto.replace(new RegExp(`%${key}`, 'g'), replace[key])
+    }
 
     await conn.sendMessage(m.chat, {
       image: { url: bannerFinal },
       caption: texto.trim(),
-      footer: '⫏⫏ αℓуα ѕυв ✿',
-      buttons: [
-        {
-          buttonId: `${_p}ping`,
-          buttonText: { displayText: '🏓 ριηg' },
-          type: 1
-        }
-      ],
       mentions: [m.sender],
       contextInfo: {
         forwardingScore: 999,
