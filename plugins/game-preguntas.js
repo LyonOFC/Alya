@@ -30,7 +30,26 @@ const getRandomQuestion = () => {
   }
 }
 
-let handler = async (m, { conn, usedPrefix }) => {
+const limpiarTimeout = (gameId) => {
+  if (games[gameId] && games[gameId].timeout) {
+    clearTimeout(games[gameId].timeout)
+    games[gameId].timeout = null
+  }
+}
+
+const iniciarTimeout = (gameId, conn, chat) => {
+  limpiarTimeout(gameId)
+  if (!games[gameId]) return
+  
+  games[gameId].timeout = setTimeout(() => {
+    if (games[gameId]) {
+      conn.sendMessage(chat, { text: `⏰ Partida cerrada por inactividad (30 segundos sin respuesta)` })
+      delete games[gameId]
+    }
+  }, 30000)
+}
+
+let handler = async (m, { conn }) => {
   let isGroup = m.chat.endsWith('@g.us')
   
   if (!isGroup) return m.reply(`
@@ -54,21 +73,14 @@ let handler = async (m, { conn, usedPrefix }) => {
     player: m.sender,
     currentQuestion: firstQuestion,
     score: 0,
-    round: 1,
-    lastMove: Date.now(),
-    timeout: setTimeout(() => {
-      if (games[gameId]) {
-        conn.sendMessage(m.chat, { text: `⏰ Partida cerrada por inactividad (30 segundos)` })
-        delete games[gameId]
-      }
-    }, 30000)
+    round: 1
   }
 
   const rows = firstQuestion.options.map((opt, i) => ({
     header: `Opción ${String.fromCharCode(65 + i)}`,
     title: opt.length > 35 ? opt.substring(0, 32) + '...' : opt,
     description: `Selecciona esta respuesta`,
-    id: `quiz_${gameId}_${i}`
+    id: `preguntas_${gameId}_${i}`
   }))
 
   const buttons = {
@@ -94,6 +106,8 @@ let handler = async (m, { conn, usedPrefix }) => {
   }, { quoted: m })
 
   await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+  
+  iniciarTimeout(gameId, conn, m.chat)
 }
 
 handler.before = async (m, { conn }) => {
@@ -103,7 +117,7 @@ handler.before = async (m, { conn }) => {
   try {
     const data = JSON.parse(nativeFlow.paramsJson || '{}')
     const id = data.id || data.selectedId || data.selectedRowId || null
-    if (!id || !id.startsWith('quiz_')) return false
+    if (!id || !id.startsWith('preguntas_')) return false
 
     const parts = id.split('_')
     const gameId = parts[1]
@@ -111,7 +125,7 @@ handler.before = async (m, { conn }) => {
 
     const game = games[gameId]
     if (!game) {
-      await conn.sendMessage(m.chat, { text: `❌ La partida ya terminó. Usa *preguntados* para iniciar una nueva.` }, { quoted: m })
+      await conn.sendMessage(m.chat, { text: `❌ La partida ya terminó. Usa *preguntas* para iniciar una nueva.` }, { quoted: m })
       return true
     }
 
@@ -120,7 +134,7 @@ handler.before = async (m, { conn }) => {
       return true
     }
 
-    clearTimeout(game.timeout)
+    limpiarTimeout(gameId)
 
     const selectedAnswer = game.currentQuestion.options[selectedIndex]
     const isCorrect = selectedAnswer === game.currentQuestion.correct
@@ -180,19 +194,12 @@ handler.before = async (m, { conn }) => {
 
     game.currentQuestion = nextQuestion
     game.round++
-    game.lastMove = Date.now()
-    game.timeout = setTimeout(() => {
-      if (games[gameId]) {
-        conn.sendMessage(gameId, { text: `⏰ Partida cerrada por inactividad (30 segundos)` })
-        delete games[gameId]
-      }
-    }, 30000)
 
     const rows = nextQuestion.options.map((opt, i) => ({
       header: `Opción ${String.fromCharCode(65 + i)}`,
       title: opt.length > 35 ? opt.substring(0, 32) + '...' : opt,
       description: `Selecciona esta respuesta`,
-      id: `quiz_${gameId}_${i}`
+      id: `preguntas_${gameId}_${i}`
     }))
 
     const buttons = {
@@ -218,6 +225,8 @@ handler.before = async (m, { conn }) => {
     }, { quoted: m })
 
     await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+    
+    iniciarTimeout(gameId, conn, m.chat)
     return true
 
   } catch (e) {
@@ -228,6 +237,6 @@ handler.before = async (m, { conn }) => {
 
 handler.help = ['preguntas']
 handler.tags = ['game']
-handler.command = ['preguntas', 'quiz', 'trivia']
+handler.command = ['preguntas', 'preguntados', 'quiz']
 
 export default handler
